@@ -83,18 +83,30 @@ body { font-family: 'Poppins', sans-serif; }
 
 <!-- SELL -->
 <div x-show="section==='sell'" class="max-w-md space-y-3">
-<p class="font-bold text-green-600">USDT (TRC20)</p>
+
+<select x-model="coin" class="w-full p-2 border rounded-lg">
+<option value="usdt">USDT (TRC20)</option>
+<option value="btc">Bitcoin (BTC)</option>
+<option value="eth">Ethereum (ETH)</option>
+<option value="ltc">Litecoin (LTC)</option>
+<option value="trx">Tron (TRX)</option>
+</select>
+
+<p class="font-bold text-green-600" x-text="coin.toUpperCase()"></p>
+
 <input x-model.number="amount" type="number" placeholder="Minimum $500" class="w-full p-2 border rounded-lg">
 
 <div class="glass p-3 rounded-lg">
 <p>USD: <span x-text="amount"></span></p>
-<p>INR: <span x-text="amount*rate"></span></p>
+<p>INR: <span x-text="amount * rates[coin]"></span></p>
 </div>
 
 <div class="glass p-3 rounded-lg text-center">
 <p>Deposit Address</p>
-<p class="text-blue-600 break-all">TQ6zXEEuZrFcSHWdhJt5a1Hi4p9qoBibTd</p>
-<img :src="'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=TQ6zXEEuZrFcSHWdhJt5a1Hi4p9qoBibTd'" class="mx-auto mt-2">
+<p class="text-blue-600 break-all" x-text="wallets[coin]"></p>
+<img 
+:src="'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + wallets[coin]" 
+class="mx-auto mt-2">
 </div>
 
 <input placeholder="TX Hash" class="w-full p-2 border rounded-lg">
@@ -143,18 +155,40 @@ function app(){
  usd:0, inr:0, pending:0,
  amount:0, withdrawAmt:0,
  txs:[], withdrawals:[],
- rate:83,
+
+ coin:'usdt',
+
+ wallets:{
+  usdt:"TQ6zXEEuZrFcSHWdhJt5a1Hi4p9qoBibTd",
+  btc:"bc1pjxpdrsvhu6whk5hjtn7szm7ppkshfhtu8k8q57tv98mg8aj0haus0ml3cu",
+  eth:"0xExampleEthereumAddress123456789",
+  ltc:"ltc1qexamplelitecoinaddress1234567",
+  trx:"TExampleTronAddress123456789"
+ },
+
+ // QR Scanner result
+ scannedAddress:'',
+
+ 
+
+ rates:{
+  usdt:83,
+  btc:5000000,
+  eth:300000,
+  ltc:7000,
+  trx:7
+ },
 
  tab(s){ return this.section===s?'active-tab block':'block'; },
 
  submit(){
   if(this.amount<500) return alert('Minimum $500');
   this.usd+=this.amount;
-  this.inr+=this.amount*this.rate;
+  this.inr+=this.amount*this.rates[this.coin];
   this.pending++;
-  this.txs.push(this.amount);
+  this.txs.push({amount:this.amount, coin:this.coin.toUpperCase()});
  },
-
+  
  withdraw(){
   if(this.withdrawAmt>this.inr) return alert('Insufficient balance');
   this.inr-=this.withdrawAmt;
