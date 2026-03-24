@@ -68,12 +68,12 @@ body { font-family: 'Poppins', sans-serif; }
 <div class="hidden md:block p-5 space-y-4">
 <h2 class="text-xl font-bold text-blue-600 mb-6">🚀 Crypto Galian</h2>
 <button @click="section='dashboard'" :class="tab('dashboard')">🏠 Dashboard</button>
+<button @click="section='market'" :class="tab('market')">📈 Market</button>
 <button @click="section='sell'" :class="tab('sell')">💰 Sell</button>
 <button @click="section='transactions'" :class="tab('transactions')">📊 Transactions</button>
 <button @click="section='withdraw'" :class="tab('withdraw')">💸 Withdraw</button>
 <button @click="section='status'" :class="tab('status')">📄 Status</button>
 <button @click="section='profile'" :class="tab('profile')">👤 Profile</button>
-<button @click="section='market'" :class="tab('market')">📈 Market</button>
 <button @click="logout()" class="text-red-500 mt-4">🚪 Logout</button>
 </div>
 
@@ -228,45 +228,26 @@ class="mx-auto mt-2">
 <!-- MARKET -->
 <div x-show="section==='market'" class="space-y-4">
 
-  <!-- HEADER CONTROLS -->
-  <div class="glass p-4 rounded-xl space-y-2">
-    <h3 class="font-bold">Live Crypto Market</h3>
-
-    <!-- COIN SELECT -->
-    <select x-model="marketCoin" class="w-full p-2 border rounded-lg">
-      <option value="BTCUSDT">BTC</option>
-      <option value="ETHUSDT">ETH</option>
-      <option value="SOLUSDT">SOL</option>
-      <option value="TRXUSDT">TRX</option>
-    </select>
-
-    <!-- TIMEFRAME -->
-    <div class="flex gap-2">
-      <button @click="timeframe='1'" class="px-2 py-1 border rounded">1m</button>
-      <button @click="timeframe='5'" class="px-2 py-1 border rounded">5m</button>
-      <button @click="timeframe='60'" class="px-2 py-1 border rounded">1h</button>
-      <button @click="timeframe='D'" class="px-2 py-1 border rounded">1D</button>
-    </div>
+  <!-- SEARCH -->
+  <div class="glass p-3 rounded-xl">
+    <input x-model="search" placeholder="Search crypto..." class="w-full p-2 border rounded-lg">
   </div>
 
-  <!-- LIVE GRAPH -->
-  <div class="glass p-2 rounded-xl">
-    <iframe 
-  :src="`https://s.tradingview.com/widgetembed/?frameElementId=tradingview_chart&symbol=BINANCE:${marketCoin}&interval=${timeframe}&hidesidetoolbar=1&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=[]&theme=${dark?'dark':'light'}&style=1&timezone=Asia%2FKolkata&withdateranges=1&hideideas=1`"
-  style="width:100%; height:400px; border:none;">
-</iframe>
-  </div>
-
-  <!-- MINI CARDS WITH CHANGE -->
-  <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-    <template x-for="(v,k) in rates">
-      <div class="glass p-3 text-center">
-        <p class="text-sm" x-text="k.toUpperCase()"></p>
-        <p class="font-bold" x-text="v"></p>
-        <p :class="changes[k]>=0 ? 'text-green-500' : 'text-red-500'">
-          <span x-text="changes[k]>=0 ? '▲' : '▼'"></span>
-          <span x-text="Math.abs(changes[k])"></span>
-        </p>
+  <!-- CRYPTO LIST -->
+  <div class="space-y-2">
+    <template x-for="coin in filteredCoins()" :key="coin.id">
+      <div class="glass p-3 rounded-xl flex justify-between items-center">
+        <div>
+          <p class="font-bold" x-text="coin.symbol.toUpperCase()"></p>
+          <p class="text-sm text-gray-500" x-text="coin.name"></p>
+        </div>
+        <div class="text-right">
+          <p class="font-bold">₹<span x-text="coin.current_price"></span></p>
+          <p :class="coin.price_change_percentage_24h >= 0 ? 'text-green-500' : 'text-red-500'">
+            <span x-text="coin.price_change_percentage_24h >= 0 ? '▲' : '▼'"></span>
+            <span x-text="coin.price_change_percentage_24h.toFixed(2)"></span>%
+          </p>
+        </div>
       </div>
     </template>
   </div>
@@ -310,6 +291,8 @@ function app(){
   trx:0
  },
  changes:{ usdt:0, btc:0, eth:0, sol:0, trx:0 },
+ coins:[],
+ search:'',
 
  tab(s){ return this.section===s?'active-tab block':'block'; },
 
@@ -365,6 +348,24 @@ approveTx(i){
 
  
 
+ // FETCH MARKET
+ async fetchMarket(){
+  try{
+    const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&order=market_cap_desc&per_page=10&page=1&sparkline=false');
+    const data = await res.json();
+    this.coins = data;
+  }catch(e){
+    console.log('Market error', e);
+  }
+ },
+
+ filteredCoins(){
+  return this.coins.filter(c =>
+    c.name.toLowerCase().includes(this.search.toLowerCase()) ||
+    c.symbol.toLowerCase().includes(this.search.toLowerCase())
+  );
+ },
+
  // FETCH LIVE PRICES
  async fetchPrices(){
   const old = {...this.rates};
@@ -389,8 +390,13 @@ approveTx(i){
 
  init(){
   this.fetchPrices();
-  setInterval(()=>this.fetchPrices(), 10000); // update every 10 sec
- },
+  this.fetchMarket();
+
+  setInterval(()=>{
+    this.fetchPrices();
+    this.fetchMarket();
+  }, 10000);
+},
 
  logout(){ this.page='landing'; }
  }
