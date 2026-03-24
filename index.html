@@ -19,17 +19,45 @@ body { font-family: 'Poppins', sans-serif; }
 <body class="bg-gradient-to-br from-blue-50 to-gray-100 text-gray-800" x-data="app()">
 
 <!-- LANDING -->
-<div x-show="page==='landing'" class="min-h-screen flex flex-col items-center justify-center text-center px-4">
-<h1 class="text-5xl font-bold text-blue-600 mb-4">🚀 Crypto Galian</h1>
-<p class="text-gray-600 mb-6 max-w-xl">Sell USDT (TRC20) instantly and receive INR securely.</p>
+<div x-show="page==='landing'" class="min-h-screen flex flex-col">
 
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 w-full max-w-3xl">
-<div class="glass p-4 rounded-xl">⚡ Fast</div>
-<div class="glass p-4 rounded-xl">🔒 Secure</div>
-<div class="glass p-4 rounded-xl">💰 Best Rates</div>
-</div>
+<!-- HERO -->
+<section class="flex-1 flex flex-col items-center justify-center text-center px-6">
+  <h1 class="text-5xl md:text-6xl font-extrabold text-blue-600 mb-4">🚀 Crypto Galian</h1>
+  <p class="text-gray-600 mb-6 max-w-xl text-lg">
+    Instantly sell Bitcoin, USDT, ETH, SOL & TRX and receive INR safely.
+  </p>
 
-<button @click="page='dashboard'" class="bg-blue-600 text-white px-6 py-3 rounded-xl">Start Selling</button>
+  <div class="flex gap-3 flex-wrap justify-center mb-6">
+    <span class="glass px-4 py-2 rounded-full">⚡ Instant</span>
+    <span class="glass px-4 py-2 rounded-full">🔒 Secure</span>
+    <span class="glass px-4 py-2 rounded-full">💰 Best Rates</span>
+    <span class="glass px-4 py-2 rounded-full">📱 Easy UI</span>
+  </div>
+
+  <button @click="page='dashboard'" class="bg-blue-600 hover:bg-blue-700 transition text-white px-8 py-3 rounded-xl text-lg shadow-lg">
+    Start Selling
+  </button>
+</section>
+
+<!-- FEATURES -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 pb-10 max-w-5xl mx-auto">
+  <div class="glass p-5 rounded-xl text-center">
+    <h3 class="font-bold text-lg mb-2">💱 Multi Crypto</h3>
+    <p class="text-sm text-gray-600">Support for BTC, USDT, ETH, SOL & TRX</p>
+  </div>
+
+  <div class="glass p-5 rounded-xl text-center">
+    <h3 class="font-bold text-lg mb-2">📊 Live Conversion</h3>
+    <p class="text-sm text-gray-600">Instant USD to INR calculation</p>
+  </div>
+
+  <div class="glass p-5 rounded-xl text-center">
+    <h3 class="font-bold text-lg mb-2">🔐 Safe Process</h3>
+    <p class="text-sm text-gray-600">Secure wallet & transaction flow</p>
+  </div>
+</section>
+
 </div>
 
 <!-- DASHBOARD -->
@@ -45,6 +73,7 @@ body { font-family: 'Poppins', sans-serif; }
 <button @click="section='withdraw'" :class="tab('withdraw')">💸 Withdraw</button>
 <button @click="section='status'" :class="tab('status')">📄 Status</button>
 <button @click="section='profile'" :class="tab('profile')">👤 Profile</button>
+<button @click="section='market'" :class="tab('market')">📈 Market</button>
 <button @click="logout()" class="text-red-500 mt-4">🚪 Logout</button>
 </div>
 
@@ -59,26 +88,54 @@ body { font-family: 'Poppins', sans-serif; }
 <!-- MAIN -->
 <main class="flex-1 p-4 pb-24 md:pb-4">
 
-<!-- HEADER -->
 <div class="mb-4">
 <h2 class="text-2xl font-bold capitalize" x-text="section"></h2>
-<p class="text-sm text-gray-500">Crypto Dashboard Overview</p>
 </div>
 
 <!-- DASHBOARD -->
-<div x-show="section==='dashboard'" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<div x-show="section==='dashboard'" class="space-y-4">
+
+<!-- QUICK ACTION -->
+<div class="glass p-4 rounded-xl flex justify-between items-center">
+  <div>
+    <p class="text-sm text-gray-500">Welcome back 👋</p>
+    <p class="font-bold text-lg">Start selling your crypto instantly</p>
+  </div>
+  <button @click="section='sell'" class="bg-blue-600 text-white px-4 py-2 rounded-lg">
+    Sell Now
+  </button>
+</div>
+
+<!-- STATS -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 <div class="glass card p-5 text-center">
-<p class="text-gray-500">USD Balance</p>
+<p>USD Balance</p>
 <p class="text-2xl text-blue-600 font-bold" x-text="usd"></p>
 </div>
 <div class="glass card p-5 text-center">
-<p class="text-gray-500">INR Balance</p>
+<p>INR Balance</p>
 <p class="text-2xl text-green-600 font-bold" x-text="inr"></p>
 </div>
 <div class="glass card p-5 text-center">
-<p class="text-gray-500">Pending</p>
+<p>Pending</p>
 <p class="text-2xl text-orange-500 font-bold" x-text="pending"></p>
 </div>
+</div>
+
+<!-- RECENT ACTIVITY -->
+<div class="glass p-4 rounded-xl">
+  <h3 class="font-bold mb-2">Recent Activity</h3>
+  <template x-if="txs.length === 0">
+    <p class="text-sm text-gray-500">No transactions yet</p>
+  </template>
+  <template x-for="t in txs.slice(-3)">
+  <div class="flex justify-between text-sm border-b py-1">
+    <span>$<span x-text="t.amount"></span> (<span x-text="t.coin"></span>)</span>
+    <span :class="t.status==='approved' ? 'text-green-500' : 'text-orange-500'" x-text="t.status"></span>
+  </div>
+</template>
+</div>
+
 </div>
 
 <!-- SELL -->
@@ -88,7 +145,7 @@ body { font-family: 'Poppins', sans-serif; }
 <option value="usdt">USDT (TRC20)</option>
 <option value="btc">Bitcoin (BTC)</option>
 <option value="eth">Ethereum (ETH)</option>
-<option value="ltc">Litecoin (LTC)</option>
+<option value="sol">Solana (SOL)</option>
 <option value="trx">Tron (TRX)</option>
 </select>
 
@@ -105,9 +162,11 @@ body { font-family: 'Poppins', sans-serif; }
 <p>Deposit Address</p>
 <p class="text-blue-600 break-all" x-text="wallets[coin]"></p>
 <img 
-:src="'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + wallets[coin]" 
+:src="'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&data=' + wallets[coin]" 
 class="mx-auto mt-2">
 </div>
+
+<!-- QR SCANNER -->
 
 <input placeholder="TX Hash" class="w-full p-2 border rounded-lg">
 <button @click="submit()" class="bg-blue-600 text-white w-full py-2 rounded-lg">Submit</button>
@@ -115,18 +174,39 @@ class="mx-auto mt-2">
 
 <!-- TRANSACTIONS -->
 <div x-show="section==='transactions'" class="space-y-2">
-<template x-for="t in txs">
-<div class="glass p-3 rounded-lg flex justify-between">
-<span>$<span x-text="t"></span></span>
-<span class="text-orange-500">Pending</span>
+<template x-for="(t,i) in txs">
+<div class="glass p-3 rounded-lg flex justify-between items-center">
+  <span>$<span x-text="t.amount"></span> (<span x-text="t.coin"></span>)</span>
+  <div class="flex gap-2 items-center">
+    <span :class="t.status==='approved' ? 'text-green-500' : 'text-orange-500'" x-text="t.status"></span>
+    <button x-show="t.status==='pending'" @click="approveTx(i)" class="text-xs bg-green-600 text-white px-2 py-1 rounded">
+      Approve
+    </button>
+  </div>
 </div>
 </template>
 </div>
 
 <!-- WITHDRAW -->
 <div x-show="section==='withdraw'" class="space-y-3 max-w-md">
-<input x-model.number="withdrawAmt" placeholder="Enter Amount" class="w-full p-2 border rounded-lg">
-<button @click="withdraw()" class="bg-green-600 text-white w-full py-2 rounded-lg">Withdraw</button>
+
+<!-- CURRENCY SELECT -->
+<select x-model="withdrawType" class="w-full p-2 border rounded-lg">
+  <option value="inr">INR</option>
+  <option value="usd">USD</option>
+</select>
+
+<input x-model.number="withdrawAmt" :placeholder="withdrawType==='inr' ? 'Minimum ₹'+(500*83) : 'Minimum $500'" class="w-full p-2 border rounded-lg">
+
+<p class="text-sm text-gray-500">
+  Balance: 
+  <span x-text="withdrawType==='inr' ? '₹'+inr : '$'+usd"></span>
+</p>
+
+<button @click="withdraw()" class="bg-green-600 text-white w-full py-2 rounded-lg">
+  Withdraw
+</button>
+
 </div>
 
 <!-- STATUS -->
@@ -145,6 +225,54 @@ class="mx-auto mt-2">
 <p>Crypto Galian User</p>
 </div>
 
+<!-- MARKET -->
+<div x-show="section==='market'" class="space-y-4">
+
+  <!-- HEADER CONTROLS -->
+  <div class="glass p-4 rounded-xl space-y-2">
+    <h3 class="font-bold">Live Crypto Market</h3>
+
+    <!-- COIN SELECT -->
+    <select x-model="marketCoin" class="w-full p-2 border rounded-lg">
+      <option value="BTCUSDT">BTC</option>
+      <option value="ETHUSDT">ETH</option>
+      <option value="SOLUSDT">SOL</option>
+      <option value="TRXUSDT">TRX</option>
+    </select>
+
+    <!-- TIMEFRAME -->
+    <div class="flex gap-2">
+      <button @click="timeframe='1'" class="px-2 py-1 border rounded">1m</button>
+      <button @click="timeframe='5'" class="px-2 py-1 border rounded">5m</button>
+      <button @click="timeframe='60'" class="px-2 py-1 border rounded">1h</button>
+      <button @click="timeframe='D'" class="px-2 py-1 border rounded">1D</button>
+    </div>
+  </div>
+
+  <!-- LIVE GRAPH -->
+  <div class="glass p-2 rounded-xl">
+    <iframe 
+      :src="'https://s.tradingview.com/widgetembed/?symbol=BINANCE:'+marketCoin+'&interval='+timeframe+'&theme='+(dark?'dark':'light')+'&style=1&timezone=Asia%2FKolkata'"
+      style="width:100%; height:400px; border:none;">
+    </iframe>
+  </div>
+
+  <!-- MINI CARDS WITH CHANGE -->
+  <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+    <template x-for="(v,k) in rates">
+      <div class="glass p-3 text-center">
+        <p class="text-sm" x-text="k.toUpperCase()"></p>
+        <p class="font-bold" x-text="v"></p>
+        <p :class="changes[k]>=0 ? 'text-green-500' : 'text-red-500'">
+          <span x-text="changes[k]>=0 ? '▲' : '▼'"></span>
+          <span x-text="Math.abs(changes[k])"></span>
+        </p>
+      </div>
+    </template>
+  </div>
+
+</div>
+
 </main>
 </div>
 
@@ -157,13 +285,16 @@ function app(){
  txs:[], withdrawals:[],
 
  coin:'usdt',
+ withdrawType:'inr',
+ marketCoin:'BTCUSDT',
+ timeframe:'15',
 
  wallets:{
   usdt:"TQ6zXEEuZrFcSHWdhJt5a1Hi4p9qoBibTd",
   btc:"bc1pjxpdrsvhu6whk5hjtn7szm7ppkshfhtu8k8q57tv98mg8aj0haus0ml3cu",
-  eth:"0xExampleEthereumAddress123456789",
-  ltc:"ltc1qexamplelitecoinaddress1234567",
-  trx:"TExampleTronAddress123456789"
+  eth:"0x9b0aABC8d24a068F3797e44aE47EdA474cADA346",
+  sol:"9nrbnqURHK75YFALxG23Kfrv4yEJgHySwzKCLdCmCCEs",
+  trx:"TQ6zXEEuZrFcSHWdhJt5a1Hi4p9qoBibTd"
  },
 
  // QR Scanner result
@@ -173,26 +304,92 @@ function app(){
 
  rates:{
   usdt:83,
-  btc:5000000,
-  eth:300000,
-  ltc:7000,
-  trx:7
+  btc:0,
+  eth:0,
+  sol:0,
+  trx:0
  },
+ changes:{ usdt:0, btc:0, eth:0, sol:0, trx:0 },
 
  tab(s){ return this.section===s?'active-tab block':'block'; },
 
  submit(){
   if(this.amount<500) return alert('Minimum $500');
-  this.usd+=this.amount;
-  this.inr+=this.amount*this.rates[this.coin];
   this.pending++;
-  this.txs.push({amount:this.amount, coin:this.coin.toUpperCase()});
- },
-  
+  this.txs.push({amount:this.amount, coin:this.coin.toUpperCase(), status:'pending'});
+},
+
+approveTx(i){
+  const tx = this.txs[i];
+  if(!tx || tx.status==='approved') return;
+
+  // credit balances on approval
+  this.usd += tx.amount;
+  this.inr += tx.amount * this.rates[tx.coin.toLowerCase()];
+
+  tx.status = 'approved';
+  this.pending--;
+},
+
  withdraw(){
-  if(this.withdrawAmt>this.inr) return alert('Insufficient balance');
-  this.inr-=this.withdrawAmt;
-  this.withdrawals.push(this.withdrawAmt);
+  const minUSD = 500;
+  const minINR = 500 * 83; // convert $500 to INR
+
+  if(this.withdrawType==='inr'){
+    if(this.inr<=0) return alert('No balance to withdraw');
+    if(this.withdrawAmt < minINR) return alert('Minimum withdrawal is ₹' + minINR);
+    if(this.withdrawAmt > this.inr) return alert('Insufficient balance');
+
+    this.inr -= this.withdrawAmt;
+    this.withdrawals.push(this.withdrawAmt);
+  } else {
+    if(this.usd<=0) return alert('No balance to withdraw');
+    if(this.withdrawAmt < minUSD) return alert('Minimum withdrawal is $500');
+    if(this.withdrawAmt > this.usd) return alert('Insufficient balance');
+
+    this.usd -= this.withdrawAmt;
+    this.withdrawals.push(this.withdrawAmt);
+  }
+},
+
+
+ scanQR(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    alert('QR scan feature placeholder (connect real scanner API)');
+  };
+  reader.readAsDataURL(file);
+ },
+
+ 
+
+ // FETCH LIVE PRICES
+ async fetchPrices(){
+  const old = {...this.rates};
+  try{
+    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,tron,tether&vs_currencies=inr');
+    const data = await res.json();
+
+    this.rates.btc = data.bitcoin.inr;
+    this.rates.eth = data.ethereum.inr;
+    this.rates.sol = data.solana.inr;
+    this.rates.trx = data.tron.inr;
+    this.rates.usdt = data.tether.inr;
+
+    // calculate change
+    for(let k in this.rates){
+      this.changes[k] = this.rates[k] - (old[k]||0);
+    }
+  }catch(e){
+    console.log('Price fetch error', e);
+  }
+ },
+
+ init(){
+  this.fetchPrices();
+  setInterval(()=>this.fetchPrices(), 10000); // update every 10 sec
  },
 
  logout(){ this.page='landing'; }
