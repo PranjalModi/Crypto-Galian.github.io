@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crypto Galian</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body { font-family: 'Poppins', sans-serif; }
+.glass { backdrop-filter: blur(18px); background: rgba(255,255,255,0.75); box-shadow:0 10px 40px rgba(0,0,0,0.1); }
+.active-tab { border-bottom: 3px solid #2563eb; color:#2563eb; }
+.card { border-radius: 18px; }
+</style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-gray-100 text-gray-800" x-data="app()">
+
+<!-- LANDING -->
+<div x-show="page==='landing'" class="min-h-screen flex flex-col items-center justify-center text-center px-4">
+<h1 class="text-5xl font-bold text-blue-600 mb-4">🚀 Crypto Galian</h1>
+<p class="text-gray-600 mb-6 max-w-xl">Sell USDT (TRC20) instantly and receive INR securely.</p>
+
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 w-full max-w-3xl">
+<div class="glass p-4 rounded-xl">⚡ Fast</div>
+<div class="glass p-4 rounded-xl">🔒 Secure</div>
+<div class="glass p-4 rounded-xl">💰 Best Rates</div>
+</div>
+
+<button @click="page='dashboard'" class="bg-blue-600 text-white px-6 py-3 rounded-xl">Start Selling</button>
+</div>
+
+<!-- DASHBOARD -->
+<div x-show="page==='dashboard'" class="flex min-h-screen">
+
+<!-- SIDEBAR -->
+<aside class="bg-white md:w-64 w-full md:min-h-screen fixed md:static bottom-0 left-0 right-0 z-50 border-t md:border-r shadow-sm">
+<div class="hidden md:block p-5 space-y-4">
+<h2 class="text-xl font-bold text-blue-600 mb-6">🚀 Crypto Galian</h2>
+<button @click="section='dashboard'" :class="tab('dashboard')">🏠 Dashboard</button>
+<button @click="section='sell'" :class="tab('sell')">💰 Sell</button>
+<button @click="section='transactions'" :class="tab('transactions')">📊 Transactions</button>
+<button @click="section='withdraw'" :class="tab('withdraw')">💸 Withdraw</button>
+<button @click="section='status'" :class="tab('status')">📄 Status</button>
+<button @click="section='profile'" :class="tab('profile')">👤 Profile</button>
+<button @click="logout()" class="text-red-500 mt-4">🚪 Logout</button>
+</div>
+
+<div class="flex md:hidden justify-around py-2 bg-white text-xs">
+<button @click="section='dashboard'">🏠</button>
+<button @click="section='sell'">💰</button>
+<button @click="section='withdraw'">💸</button>
+<button @click="section='profile'">👤</button>
+</div>
+</aside>
+
+<!-- MAIN -->
+<main class="flex-1 p-4 pb-24 md:pb-4">
+
+<!-- HEADER -->
+<div class="mb-4">
+<h2 class="text-2xl font-bold capitalize" x-text="section"></h2>
+<p class="text-sm text-gray-500">Crypto Dashboard Overview</p>
+</div>
+
+<!-- DASHBOARD -->
+<div x-show="section==='dashboard'" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="glass card p-5 text-center">
+<p class="text-gray-500">USD Balance</p>
+<p class="text-2xl text-blue-600 font-bold" x-text="usd"></p>
+</div>
+<div class="glass card p-5 text-center">
+<p class="text-gray-500">INR Balance</p>
+<p class="text-2xl text-green-600 font-bold" x-text="inr"></p>
+</div>
+<div class="glass card p-5 text-center">
+<p class="text-gray-500">Pending</p>
+<p class="text-2xl text-orange-500 font-bold" x-text="pending"></p>
+</div>
+</div>
+
+<!-- SELL -->
+<div x-show="section==='sell'" class="max-w-md space-y-3">
+<p class="font-bold text-green-600">USDT (TRC20)</p>
+<input x-model.number="amount" type="number" placeholder="Minimum $500" class="w-full p-2 border rounded-lg">
+
+<div class="glass p-3 rounded-lg">
+<p>USD: <span x-text="amount"></span></p>
+<p>INR: <span x-text="amount*rate"></span></p>
+</div>
+
+<div class="glass p-3 rounded-lg text-center">
+<p>Deposit Address</p>
+<p class="text-blue-600 break-all">TQ6zXEEuZrFcSHWdhJt5a1Hi4p9qoBibTd</p>
+<img :src="'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=TQ6zXEEuZrFcSHWdhJt5a1Hi4p9qoBibTd'" class="mx-auto mt-2">
+</div>
+
+<input placeholder="TX Hash" class="w-full p-2 border rounded-lg">
+<button @click="submit()" class="bg-blue-600 text-white w-full py-2 rounded-lg">Submit</button>
+</div>
+
+<!-- TRANSACTIONS -->
+<div x-show="section==='transactions'" class="space-y-2">
+<template x-for="t in txs">
+<div class="glass p-3 rounded-lg flex justify-between">
+<span>$<span x-text="t"></span></span>
+<span class="text-orange-500">Pending</span>
+</div>
+</template>
+</div>
+
+<!-- WITHDRAW -->
+<div x-show="section==='withdraw'" class="space-y-3 max-w-md">
+<input x-model.number="withdrawAmt" placeholder="Enter Amount" class="w-full p-2 border rounded-lg">
+<button @click="withdraw()" class="bg-green-600 text-white w-full py-2 rounded-lg">Withdraw</button>
+</div>
+
+<!-- STATUS -->
+<div x-show="section==='status'" class="space-y-2">
+<template x-for="w in withdrawals">
+<div class="glass p-3 rounded-lg flex justify-between">
+<span>₹<span x-text="w"></span></span>
+<span class="text-orange-500">Pending</span>
+</div>
+</template>
+</div>
+
+<!-- PROFILE -->
+<div x-show="section==='profile'" class="glass p-4 rounded-lg">
+<h3 class="font-bold">Profile</h3>
+<p>Crypto Galian User</p>
+</div>
+
+</main>
+</div>
+
+<script>
+function app(){
+ return {
+ page:'landing', section:'dashboard',
+ usd:0, inr:0, pending:0,
+ amount:0, withdrawAmt:0,
+ txs:[], withdrawals:[],
+ rate:83,
+
+ tab(s){ return this.section===s?'active-tab block':'block'; },
+
+ submit(){
+  if(this.amount<500) return alert('Minimum $500');
+  this.usd+=this.amount;
+  this.inr+=this.amount*this.rate;
+  this.pending++;
+  this.txs.push(this.amount);
+ },
+
+ withdraw(){
+  if(this.withdrawAmt>this.inr) return alert('Insufficient balance');
+  this.inr-=this.withdrawAmt;
+  this.withdrawals.push(this.withdrawAmt);
+ },
+
+ logout(){ this.page='landing'; }
+ }
+}
+</script>
+
+</body>
+</html>
