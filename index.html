@@ -21,6 +21,7 @@ body { font-family: 'Poppins', sans-serif; }
 <!-- LANDING -->
 <div x-show="page==='landing'" class="min-h-screen flex flex-col">
 
+<!-- HERO -->
 <section class="flex-1 flex flex-col items-center justify-center text-center px-6">
   <h1 class="text-5xl md:text-6xl font-extrabold text-blue-600 mb-4">🚀 Crypto Galian</h1>
   <p class="text-gray-600 mb-6 max-w-xl text-lg">
@@ -39,6 +40,7 @@ body { font-family: 'Poppins', sans-serif; }
   </button>
 </section>
 
+<!-- FEATURES -->
 <section class="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 pb-10 max-w-5xl mx-auto">
   <div class="glass p-5 rounded-xl text-center">
     <h3 class="font-bold text-lg mb-2">💱 Multi Crypto</h3>
@@ -63,11 +65,9 @@ body { font-family: 'Poppins', sans-serif; }
 
 <!-- SIDEBAR -->
 <aside class="bg-white md:w-64 w-full md:min-h-screen fixed md:static bottom-0 left-0 right-0 z-50 border-t md:border-r shadow-sm">
-
 <div class="hidden md:block p-5 space-y-4">
 <h2 class="text-xl font-bold text-blue-600 mb-6">🚀 Crypto Galian</h2>
 <button @click="section='dashboard'" :class="tab('dashboard')">🏠 Dashboard</button>
-<button @click="section='market'" :class="tab('market')">📈 Market</button>
 <button @click="section='sell'" :class="tab('sell')">💰 Sell</button>
 <button @click="section='transactions'" :class="tab('transactions')">📊 Transactions</button>
 <button @click="section='withdraw'" :class="tab('withdraw')">💸 Withdraw</button>
@@ -76,14 +76,12 @@ body { font-family: 'Poppins', sans-serif; }
 <button @click="logout()" class="text-red-500 mt-4">🚪 Logout</button>
 </div>
 
-<!-- ✅ UPDATED MOBILE NAVBAR -->
-<div class="flex md:hidden justify-around py-3 bg-white text-sm">
-<button @click="section='dashboard'" class="text-xl">🏠</button>
-<button @click="section='sell'" class="text-xl">💰</button>
-<button @click="section='withdraw'" class="text-xl">💸</button>
-<button @click="section='profile'" class="text-xl">👤</button>
+<div class="flex md:hidden justify-around py-2 bg-white text-xs">
+<button @click="section='dashboard'">🏠</button>
+<button @click="section='sell'">💰</button>
+<button @click="section='withdraw'">💸</button>
+<button @click="section='profile'">👤</button>
 </div>
-
 </aside>
 
 <!-- MAIN -->
@@ -96,6 +94,7 @@ body { font-family: 'Poppins', sans-serif; }
 <!-- DASHBOARD -->
 <div x-show="section==='dashboard'" class="space-y-4">
 
+<!-- QUICK ACTION -->
 <div class="glass p-4 rounded-xl flex justify-between items-center">
   <div>
     <p class="text-sm text-gray-500">Welcome back 👋</p>
@@ -106,6 +105,7 @@ body { font-family: 'Poppins', sans-serif; }
   </button>
 </div>
 
+<!-- STATS -->
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 <div class="glass card p-5 text-center">
 <p>USD Balance</p>
@@ -121,44 +121,107 @@ body { font-family: 'Poppins', sans-serif; }
 </div>
 </div>
 
+<!-- RECENT ACTIVITY -->
 <div class="glass p-4 rounded-xl">
-<h3 class="font-bold mb-2">Recent Activity</h3>
-<template x-if="txs.length === 0">
-<p class="text-sm text-gray-500">No transactions yet</p>
+  <h3 class="font-bold mb-2">Recent Activity</h3>
+  <template x-if="txs.length === 0">
+    <p class="text-sm text-gray-500">No transactions yet</p>
+  </template>
+  <template x-for="t in txs.slice(-3)">
+  <div class="flex justify-between text-sm border-b py-1">
+    <span>$<span x-text="t.amount"></span> (<span x-text="t.coin"></span>)</span>
+    <span :class="t.status==='approved' ? 'text-green-500' : 'text-orange-500'" x-text="t.status"></span>
+  </div>
 </template>
-<template x-for="t in txs.slice(-3)">
-<div class="flex justify-between text-sm border-b py-1">
-<span>$<span x-text="t.amount"></span> (<span x-text="t.coin"></span>)</span>
-<span :class="t.status==='approved' ? 'text-green-500' : 'text-orange-500'" x-text="t.status"></span>
+</div>
+
+</div>
+
+<!-- SELL -->
+<div x-show="section==='sell'" class="max-w-md space-y-3">
+
+<select x-model="coin" class="w-full p-2 border rounded-lg">
+<option value="usdt">USDT (TRC20)</option>
+<option value="btc">Bitcoin (BTC)</option>
+<option value="eth">Ethereum (ETH)</option>
+<option value="sol">Solana (SOL)</option>
+<option value="trx">Tron (TRX)</option>
+</select>
+
+<p class="font-bold text-green-600" x-text="coin.toUpperCase()"></p>
+
+<input x-model.number="amount" type="number" placeholder="Minimum $500" class="w-full p-2 border rounded-lg">
+
+<div class="glass p-3 rounded-lg">
+<p>USD: <span x-text="amount"></span></p>
+<p>INR: <span x-text="amount * rates[coin]"></span></p>
+</div>
+
+<div class="glass p-3 rounded-lg text-center">
+<p>Deposit Address</p>
+<p class="text-blue-600 break-all" x-text="wallets[coin]"></p>
+<img 
+:src="'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&data=' + wallets[coin]" 
+class="mx-auto mt-2">
+</div>
+
+<!-- QR SCANNER -->
+
+<input placeholder="TX Hash" class="w-full p-2 border rounded-lg">
+<button @click="submit()" class="bg-blue-600 text-white w-full py-2 rounded-lg">Submit</button>
+</div>
+
+<!-- TRANSACTIONS -->
+<div x-show="section==='transactions'" class="space-y-2">
+<template x-for="(t,i) in txs">
+<div class="glass p-3 rounded-lg flex justify-between items-center">
+  <span>$<span x-text="t.amount"></span> (<span x-text="t.coin"></span>)</span>
+  <div class="flex gap-2 items-center">
+    <span :class="t.status==='approved' ? 'text-green-500' : 'text-orange-500'" x-text="t.status"></span>
+    <button x-show="t.status==='pending'" @click="approveTx(i)" class="text-xs bg-green-600 text-white px-2 py-1 rounded">
+      Approve
+    </button>
+  </div>
 </div>
 </template>
 </div>
 
-<!-- MARKET IN DASHBOARD -->
-<div class="space-y-4">
-<div class="glass p-3 rounded-xl">
-<input x-model="search" placeholder="Search crypto..." class="w-full p-2 border rounded-lg">
-</div>
+<!-- WITHDRAW -->
+<div x-show="section==='withdraw'" class="space-y-3 max-w-md">
 
-<div class="space-y-2">
-<template x-for="coin in filteredCoins()" :key="coin.id">
-<div class="glass p-3 rounded-xl flex justify-between items-center">
-<div>
-<p class="font-bold" x-text="coin.symbol.toUpperCase()"></p>
-<p class="text-sm text-gray-500" x-text="coin.name"></p>
-</div>
-<div class="text-right">
-<p class="font-bold">₹<span x-text="coin.current_price"></span></p>
-<p :class="coin.price_change_percentage_24h >= 0 ? 'text-green-500' : 'text-red-500'">
-<span x-text="coin.price_change_percentage_24h >= 0 ? '▲' : '▼'"></span>
-<span x-text="coin.price_change_percentage_24h.toFixed(2)"></span>%
+<!-- CURRENCY SELECT -->
+<select x-model="withdrawType" class="w-full p-2 border rounded-lg">
+  <option value="inr">INR</option>
+  <option value="usd">USD</option>
+</select>
+
+<input x-model.number="withdrawAmt" :placeholder="withdrawType==='inr' ? 'Minimum ₹'+(500*83) : 'Minimum $500'" class="w-full p-2 border rounded-lg">
+
+<p class="text-sm text-gray-500">
+  Balance: 
+  <span x-text="withdrawType==='inr' ? '₹'+inr : '$'+usd"></span>
 </p>
+
+<button @click="withdraw()" class="bg-green-600 text-white w-full py-2 rounded-lg">
+  Withdraw
+</button>
+
 </div>
+
+<!-- STATUS -->
+<div x-show="section==='status'" class="space-y-2">
+<template x-for="w in withdrawals">
+<div class="glass p-3 rounded-lg flex justify-between">
+<span>₹<span x-text="w"></span></span>
+<span class="text-orange-500">Pending</span>
 </div>
 </template>
 </div>
-</div>
 
+<!-- PROFILE -->
+<div x-show="section==='profile'" class="glass p-4 rounded-lg">
+<h3 class="font-bold">Profile</h3>
+<p>Crypto Galian User</p>
 </div>
 
 </main>
@@ -171,59 +234,104 @@ function app(){
  usd:0, inr:0, pending:0,
  amount:0, withdrawAmt:0,
  txs:[], withdrawals:[],
- coin:'usdt', withdrawType:'inr',
 
- rates:{usdt:83,btc:0,eth:0,sol:0,trx:0},
- coins:[], search:'',
+ coin:'usdt',
+ withdrawType:'inr',
+
+ wallets:{
+  usdt:"TQ6zXEEuZrFcSHWdhJt5a1Hi4p9qoBibTd",
+  btc:"bc1pjxpdrsvhu6whk5hjtn7szm7ppkshfhtu8k8q57tv98mg8aj0haus0ml3cu",
+  eth:"0x9b0aABC8d24a068F3797e44aE47EdA474cADA346",
+  sol:"9nrbnqURHK75YFALxG23Kfrv4yEJgHySwzKCLdCmCCEs",
+  trx:"TQ6zXEEuZrFcSHWdhJt5a1Hi4p9qoBibTd"
+ },
+
+ // QR Scanner result
+ scannedAddress:'',
+
+ 
+
+ rates:{
+  usdt:83,
+  btc:0,
+  eth:0,
+  sol:0,
+  trx:0
+ },
 
  tab(s){ return this.section===s?'active-tab block':'block'; },
 
  submit(){
   if(this.amount<500) return alert('Minimum $500');
-  this.txs.push({amount:this.amount, coin:this.coin, status:'pending'});
-  this.pending=this.txs.filter(t=>t.status==='pending').length;
- },
+  this.pending++;
+  this.txs.push({amount:this.amount, coin:this.coin.toUpperCase(), status:'pending'});
+},
 
- approveTx(i){
-  const tx=this.txs[i];
+approveTx(i){
+  const tx = this.txs[i];
   if(!tx || tx.status==='approved') return;
-  this.usd+=tx.amount;
-  this.inr+=tx.amount*(this.rates[tx.coin]||0);
-  tx.status='approved';
-  this.pending=this.txs.filter(t=>t.status==='pending').length;
- },
+
+  // credit balances on approval
+  this.usd += tx.amount;
+  this.inr += tx.amount * this.rates[tx.coin.toLowerCase()];
+
+  tx.status = 'approved';
+  this.pending--;
+},
 
  withdraw(){
-  if(this.withdrawAmt>this.inr) return alert('Insufficient balance');
-  this.inr-=this.withdrawAmt;
+  const minUSD = 500;
+  const minINR = 500 * 83; // convert $500 to INR
+
+  if(this.withdrawType==='inr'){
+    if(this.inr<=0) return alert('No balance to withdraw');
+    if(this.withdrawAmt < minINR) return alert('Minimum withdrawal is ₹' + minINR);
+    if(this.withdrawAmt > this.inr) return alert('Insufficient balance');
+
+    this.inr -= this.withdrawAmt;
+    this.withdrawals.push(this.withdrawAmt);
+  } else {
+    if(this.usd<=0) return alert('No balance to withdraw');
+    if(this.withdrawAmt < minUSD) return alert('Minimum withdrawal is $500');
+    if(this.withdrawAmt > this.usd) return alert('Insufficient balance');
+
+    this.usd -= this.withdrawAmt;
+    this.withdrawals.push(this.withdrawAmt);
+  }
+},
+
+
+ scanQR(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    alert('QR scan feature placeholder (connect real scanner API)');
+  };
+  reader.readAsDataURL(file);
  },
 
- filteredCoins(){
-  return this.coins.filter(c=>c && c.name && c.symbol &&
-    (c.name.toLowerCase().includes(this.search.toLowerCase()) ||
-     c.symbol.toLowerCase().includes(this.search.toLowerCase()))
-  );
- },
+ 
 
- async fetchMarket(){
-  let r=await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&per_page=10');
-  this.coins=await r.json();
- },
-
+ // FETCH LIVE PRICES
  async fetchPrices(){
-  let r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,tron,tether&vs_currencies=inr');
-  let d=await r.json();
-  this.rates.btc=d.bitcoin.inr;
-  this.rates.eth=d.ethereum.inr;
-  this.rates.sol=d.solana.inr;
-  this.rates.trx=d.tron.inr;
-  this.rates.usdt=d.tether.inr;
+  try{
+    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,tron,tether&vs_currencies=inr');
+    const data = await res.json();
+
+    this.rates.btc = data.bitcoin.inr;
+    this.rates.eth = data.ethereum.inr;
+    this.rates.sol = data.solana.inr;
+    this.rates.trx = data.tron.inr;
+    this.rates.usdt = data.tether.inr;
+  }catch(e){
+    console.log('Price fetch error', e);
+  }
  },
 
  init(){
   this.fetchPrices();
-  this.fetchMarket();
-  setInterval(()=>{this.fetchPrices();this.fetchMarket();},10000);
+  setInterval(()=>this.fetchPrices(), 10000); // update every 10 sec
  },
 
  logout(){ this.page='landing'; }
