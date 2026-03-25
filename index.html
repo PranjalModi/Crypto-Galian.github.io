@@ -23,65 +23,85 @@
     Instantly sell Bitcoin, USDT, ETH, SOL & TRX and receive INR safely.
   </p>
 
-  <div class="flex gap-3 flex-wrap justify-center mb-6">
-    <span class="glass px-4 py-2 rounded-full">⚡ Instant</span>
-    <span class="glass px-4 py-2 rounded-full">🔒 Secure</span>
-    <span class="glass px-4 py-2 rounded-full">💰 Best Rates</span>
-    <span class="glass px-4 py-2 rounded-full">📱 Easy UI</span>
-  </div>
-
-  <button @click="page='dashboard'" class="bg-blue-600 hover:bg-blue-700 transition text-white px-8 py-3 rounded-xl text-lg shadow-lg">
+  <button @click="page='dashboard'" class="bg-blue-600 text-white px-8 py-3 rounded-xl">
     Start Selling
   </button>
 </section>
 
-<section class="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 pb-10 max-w-5xl mx-auto">
-  <div class="glass p-5 rounded-xl text-center">
-    <h3 class="font-bold text-lg mb-2">💱 Multi Crypto</h3>
-    <p class="text-sm text-gray-600">Support for BTC, USDT, ETH, SOL & TRX</p>
-  </div>
-
-  <div class="glass p-5 rounded-xl text-center">
-    <h3 class="font-bold text-lg mb-2">📊 Live Conversion</h3>
-    <p class="text-sm text-gray-600">Instant USD to INR calculation</p>
-  </div>
-
-  <div class="glass p-5 rounded-xl text-center">
-    <h3 class="font-bold text-lg mb-2">🔐 Safe Process</h3>
-    <p class="text-sm text-gray-600">Secure wallet & transaction flow</p>
-  </div>
-</section>
-
 </div>
 
-<!-- DASHBOARD (UNCHANGED) -->
+<!-- DASHBOARD -->
 <div x-show="page==='dashboard'" class="flex min-h-screen">
 
-<aside class="bg-white md:w-64 w-full md:min-h-screen fixed md:static bottom-0 left-0 right-0 z-50 border-t md:border-r shadow-sm">
+<aside class="bg-white md:w-64 w-full fixed md:static bottom-0 left-0 right-0 border-t md:border-r">
 <div class="hidden md:block p-5 space-y-4">
-<h2 class="text-xl font-bold text-blue-600 mb-6">🚀 Crypto Galian</h2>
+<h2 class="text-xl font-bold text-blue-600">🚀 Crypto Galian</h2>
+
 <button @click="section='dashboard'" :class="tab('dashboard')">🏠 Dashboard</button>
 <button @click="section='sell'" :class="tab('sell')">💰 Sell</button>
 <button @click="section='transactions'" :class="tab('transactions')">📊 Transactions</button>
 <button @click="section='withdraw'" :class="tab('withdraw')">💸 Withdraw</button>
 <button @click="section='status'" :class="tab('status')">📄 Status</button>
 <button @click="section='profile'" :class="tab('profile')">👤 Profile</button>
-<button @click="logout()" class="text-red-500 mt-4">🚪 Logout</button>
-</div>
 
-<div class="flex md:hidden justify-around py-2 bg-white text-sm scale-[1.08] origin-bottom">
-<button @click="section='dashboard'">🏠</button>
-<button @click="section='sell'">💰</button>
-<button @click="section='withdraw'">💸</button>
-<button @click="section='profile'">👤</button>
+<button @click="logout()" class="text-red-500">Logout</button>
 </div>
 </aside>
 
-<main class="flex-1 p-4 pb-24 md:pb-4">
-<h2 class="text-2xl font-bold capitalize" x-text="section"></h2>
+<main class="flex-1 p-4">
 
-<!-- KEEP ALL YOUR SECTIONS SAME -->
-<!-- (Sell, Transactions, Withdraw, Status, Profile) -->
+<!-- DASHBOARD -->
+<div x-if="section==='dashboard'">
+<div class="grid grid-cols-3 gap-4">
+  <div class="glass p-4 text-center">
+    <p>USD</p>
+    <p x-text="usd"></p>
+  </div>
+  <div class="glass p-4 text-center">
+    <p>INR</p>
+    <p x-text="inr"></p>
+  </div>
+  <div class="glass p-4 text-center">
+    <p>Pending</p>
+    <p x-text="pending"></p>
+  </div>
+</div>
+</div>
+
+<!-- SELL -->
+<div x-if="section==='sell'" class="max-w-md space-y-3">
+<select x-model="coin" class="w-full p-2 border">
+<option value="usdt">USDT</option>
+<option value="btc">BTC</option>
+<option value="eth">ETH</option>
+<option value="sol">SOL</option>
+<option value="trx">TRX</option>
+</select>
+
+<input x-model.number="amount" type="number" placeholder="$500+" class="w-full p-2 border">
+
+<p>INR: <span x-text="convertedINR"></span></p>
+
+<button @click="submit()" class="bg-blue-600 text-white w-full py-2">
+Submit
+</button>
+</div>
+
+<!-- TRANSACTIONS -->
+<div x-if="section==='transactions'">
+<template x-for="(t,i) in txs" :key="t.id">
+<div class="glass p-3 flex justify-between">
+<span x-text="t.amount"></span>
+<button @click="approveTx(i)">Approve</button>
+</div>
+</template>
+</div>
+
+<!-- WITHDRAW -->
+<div x-if="section==='withdraw'" class="space-y-2">
+<input x-model.number="withdrawAmt" placeholder="Amount">
+<button @click="withdraw()" class="bg-green-600 text-white w-full">Withdraw</button>
+</div>
 
 </main>
 </div>
