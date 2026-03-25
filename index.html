@@ -81,14 +81,14 @@ body { font-family: 'Poppins', sans-serif; }
               shadow-md rounded-t-2xl border">
 
     <!-- Sliding Bubble -->
-    <div class="absolute top-2 bottom-2 w-1/4 bg-blue-100 rounded-xl transition-all duration-300"
-      :class="{
-        'left-0': active==='dashboard',
-        'left-1/4': active==='sell',
-        'left-2/4': active==='withdraw',
-        'left-3/4': active==='profile'
-      }">
-    </div>
+<div class="absolute top-2 bottom-2 w-12 bg-blue-100 rounded-xl transition-all duration-300"
+  :class="{
+    'left-[6%]': active==='dashboard',
+    'left-[31%]': active==='sell',
+    'left-[56%]': active==='withdraw',
+    'left-[81%]': active==='profile'
+  }">
+</div>
 
     <!-- Buttons -->
     <button @click="active='dashboard'; section='dashboard'" class="relative z-10 flex-1 text-lg text-center">🏠</button>
