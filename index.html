@@ -4,10 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crypto Galian</title>
-
 <script src="https://cdn.tailwindcss.com"></script>
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -18,7 +16,7 @@ body { font-family: 'Poppins', sans-serif; }
 </style>
 </head>
 
-<body class="bg-gradient-to-br from-blue-50 to-gray-100 text-gray-800" x-data="app()" x-init="init()">
+<body class="bg-gradient-to-br from-blue-50 to-gray-100 text-gray-800" x-data="app()">
 
 <!-- LANDING -->
 <div x-show="page==='landing'" class="min-h-screen flex flex-col">
@@ -63,8 +61,8 @@ body { font-family: 'Poppins', sans-serif; }
 <!-- DASHBOARD -->
 <div x-show="page==='dashboard'" class="flex min-h-screen">
 
-<!-- SIDEBAR -->
 <aside class="bg-white md:w-64 w-full md:min-h-screen fixed md:static bottom-0 left-0 right-0 z-50 border-t md:border-r shadow-sm">
+
 <div class="hidden md:block p-5 space-y-4">
 <h2 class="text-xl font-bold text-blue-600 mb-6">🚀 Crypto Galian</h2>
 <button @click="section='dashboard'" :class="tab('dashboard')">🏠 Dashboard</button>
@@ -73,7 +71,6 @@ body { font-family: 'Poppins', sans-serif; }
 <button @click="section='withdraw'" :class="tab('withdraw')">💸 Withdraw</button>
 <button @click="section='status'" :class="tab('status')">📄 Status</button>
 <button @click="section='profile'" :class="tab('profile')">👤 Profile</button>
-<button @click="logout()" class="text-red-500 mt-4">🚪 Logout</button>
 </div>
 
 <div class="flex md:hidden justify-around py-2 bg-white text-sm scale-[1.08] origin-bottom">
@@ -82,9 +79,9 @@ body { font-family: 'Poppins', sans-serif; }
 <button @click="section='withdraw'">💸</button>
 <button @click="section='profile'">👤</button>
 </div>
+
 </aside>
 
-<!-- MAIN -->
 <main class="flex-1 p-4 pb-24 md:pb-4">
 
 <div class="mb-4">
@@ -124,7 +121,7 @@ body { font-family: 'Poppins', sans-serif; }
   <template x-if="txs.length === 0">
     <p class="text-sm text-gray-500">No transactions yet</p>
   </template>
-  <template x-for="t in txs.slice(-3)" :key="t.id">
+  <template x-for="t in txs.slice(-3)">
   <div class="flex justify-between text-sm border-b py-1">
     <span>$<span x-text="t.amount"></span> (<span x-text="t.coin"></span>)</span>
     <span :class="t.status==='approved' ? 'text-green-500' : 'text-orange-500'" x-text="t.status"></span>
@@ -151,7 +148,7 @@ body { font-family: 'Poppins', sans-serif; }
 
 <div class="glass p-3 rounded-lg">
 <p>USD: <span x-text="amount"></span></p>
-<p>INR: <span x-text="convertedINR"></span></p>
+<p>INR: <span x-text="amount * rates[coin]"></span></p>
 </div>
 
 <div class="glass p-3 rounded-lg text-center">
@@ -164,11 +161,12 @@ class="mx-auto mt-2">
 
 <input placeholder="TX Hash" class="w-full p-2 border rounded-lg">
 <button @click="submit()" class="bg-blue-600 text-white w-full py-2 rounded-lg">Submit</button>
+
 </div>
 
 <!-- TRANSACTIONS -->
 <div x-show="section==='transactions'" class="space-y-2">
-<template x-for="(t,i) in txs" :key="t.id">
+<template x-for="(t,i) in txs">
 <div class="glass p-3 rounded-lg flex justify-between items-center">
   <span>$<span x-text="t.amount"></span> (<span x-text="t.coin"></span>)</span>
   <div class="flex gap-2 items-center">
@@ -213,22 +211,29 @@ class="mx-auto mt-2">
 </div>
 
 <!-- PROFILE -->
-<div x-show="section==='profile'" class="glass p-4 rounded-lg">
+<div x-show="section==='profile'" class="glass p-4 rounded-lg space-y-3">
 <h3 class="font-bold">Profile</h3>
 <p>Crypto Galian User</p>
+
+<button 
+  @click="logout()" 
+  class="px-4 py-2 rounded-full border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition w-full">
+  Logout
+</button>
+
 </div>
 
 </main>
 </div>
 
 <script>
-/* YOUR OPTIMIZED SCRIPT (UNCHANGED UI) */
 function app(){
  return {
  page:'landing', section:'dashboard',
  usd:0, inr:0, pending:0,
  amount:0, withdrawAmt:0,
  txs:[], withdrawals:[],
+
  coin:'usdt',
  withdrawType:'inr',
 
@@ -240,10 +245,14 @@ function app(){
   trx:"TQ6zXEEuZrFcSHWdhJt5a1Hi4p9qoBibTd"
  },
 
- rates:{ usdt:83, btc:0, eth:0, sol:0, trx:0 },
+ scannedAddress:'',
 
- get convertedINR(){
-  return this.amount * (this.rates[this.coin] || 0);
+ rates:{
+  usdt:83,
+  btc:0,
+  eth:0,
+  sol:0,
+  trx:0
  },
 
  tab(s){ return this.section===s?'active-tab block':'block'; },
@@ -251,59 +260,72 @@ function app(){
  submit(){
   if(this.amount<500) return alert('Minimum $500');
   this.pending++;
-  this.txs.push({ id:Date.now(), amount:this.amount, coin:this.coin.toUpperCase(), status:'pending'});
- },
+  this.txs.push({amount:this.amount, coin:this.coin.toUpperCase(), status:'pending'});
+},
 
- approveTx(i){
+approveTx(i){
   const tx = this.txs[i];
   if(!tx || tx.status==='approved') return;
+
   this.usd += tx.amount;
   this.inr += tx.amount * this.rates[tx.coin.toLowerCase()];
-  tx.status='approved';
+  tx.status = 'approved';
   this.pending--;
- },
+},
 
- withdraw(){
-  const minUSD=500, minINR=500*83;
+withdraw(){
+  const minUSD = 500;
+  const minINR = 500 * 83;
+
   if(this.withdrawType==='inr'){
-    if(this.withdrawAmt<minINR) return alert('Minimum ₹'+minINR);
-    if(this.withdrawAmt>this.inr) return alert('Insufficient');
-    this.inr-=this.withdrawAmt;
+    if(this.inr<=0) return alert('No balance to withdraw');
+    if(this.withdrawAmt < minINR) return alert('Minimum withdrawal is ₹' + minINR);
+    if(this.withdrawAmt > this.inr) return alert('Insufficient balance');
+
+    this.inr -= this.withdrawAmt;
+    this.withdrawals.push(this.withdrawAmt);
   } else {
-    if(this.withdrawAmt<minUSD) return alert('Minimum $500');
-    if(this.withdrawAmt>this.usd) return alert('Insufficient');
-    this.usd-=this.withdrawAmt;
+    if(this.usd<=0) return alert('No balance to withdraw');
+    if(this.withdrawAmt < minUSD) return alert('Minimum withdrawal is $500');
+    if(this.withdrawAmt > this.usd) return alert('Insufficient balance');
+
+    this.usd -= this.withdrawAmt;
+    this.withdrawals.push(this.withdrawAmt);
   }
-  this.withdrawals.push(this.withdrawAmt);
- },
+},
 
- async fetchPrices(){
+scanQR(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    alert('QR scan feature placeholder (connect real scanner API)');
+  };
+  reader.readAsDataURL(file);
+},
+
+async fetchPrices(){
   try{
-    const res=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,tron,tether&vs_currencies=inr');
-    const data=await res.json();
-    this.rates.btc=data.bitcoin.inr;
-    this.rates.eth=data.ethereum.inr;
-    this.rates.sol=data.solana.inr;
-    this.rates.trx=data.tron.inr;
-    this.rates.usdt=data.tether.inr;
-  }catch(e){ console.log(e); }
- },
+    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,tron,tether&vs_currencies=inr');
+    const data = await res.json();
 
- init(){
-  const saved=localStorage.getItem('cryptoApp');
-  if(saved) Object.assign(this,JSON.parse(saved));
+    this.rates.btc = data.bitcoin.inr;
+    this.rates.eth = data.ethereum.inr;
+    this.rates.sol = data.solana.inr;
+    this.rates.trx = data.tron.inr;
+    this.rates.usdt = data.tether.inr;
+  }catch(e){
+    console.log('Price fetch error', e);
+  }
+},
 
+init(){
   this.fetchPrices();
-  setInterval(()=>this.fetchPrices(),30000);
+  setInterval(()=>this.fetchPrices(), 10000);
+},
 
-  this.$watch(()=>[this.usd,this.inr,this.txs,this.withdrawals],()=>{
-    localStorage.setItem('cryptoApp',JSON.stringify({
-      usd:this.usd,inr:this.inr,txs:this.txs,withdrawals:this.withdrawals
-    }));
-  });
- },
-
- logout(){ this.page='landing'; }
+logout(){ this.page='landing'; }
+ }
 }
 </script>
 
