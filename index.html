@@ -73,11 +73,19 @@ body { font-family: 'Poppins', sans-serif; }
 <button @click="section='profile'" :class="tab('profile')">👤 Profile</button>
 </div>
 
-<div class="flex md:hidden justify-center gap-4 py-4 bg-white text-sm scale-[1.15] origin-bottom">
-<button @click="section='dashboard'">🏠</button>
-<button @click="section='sell'">💰</button>
-<button @click="section='withdraw'">💸</button>
-<button @click="section='profile'">👤</button>
+<div class="fixed bottom-4 left-1/2 -translate-x-1/2 md:hidden z-50">
+  
+  <div class="flex items-center gap-5 px-6 py-3 
+              bg-white/80 backdrop-blur-lg 
+              shadow-lg rounded-full border">
+
+    <button @click="section='dashboard'" class="text-lg">🏠</button>
+    <button @click="section='sell'" class="text-lg">💰</button>
+    <button @click="section='withdraw'" class="text-lg">💸</button>
+    <button @click="section='profile'" class="text-lg">👤</button>
+
+  </div>
+
 </div>
 
 </aside>
