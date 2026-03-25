@@ -1,20 +1,19 @@
 function app(){
  return {
- page:'landing', section:'dashboard',
- usd:0, inr:0, pending:0,
- amount:0, withdrawAmt:0,
- txs:[], withdrawals:[],
+ page:'landing',
+ section:'dashboard',
+
+ usd:0,
+ inr:0,
+ pending:0,
+
+ amount:0,
+ withdrawAmt:0,
+
+ txs:[],
+ withdrawals:[],
 
  coin:'usdt',
- withdrawType:'inr',
-
- wallets:{
-  usdt:"TQ6zXEEuZrFcSHWdhJt5a1Hi4p9qoBibTd",
-  btc:"bc1pjxpdrsvhu6whk5hjtn7szm7ppkshfhtu8k8q57tv98mg8aj0haus0ml3cu",
-  eth:"0x9b0aABC8d24a068F3797e44aE47EdA474cADA346",
-  sol:"9nrbnqURHK75YFALxG23Kfrv4yEJgHySwzKCLdCmCCEs",
-  trx:"TQ6zXEEuZrFcSHWdhJt5a1Hi4p9qoBibTd"
- },
 
  rates:{
   usdt:83,
@@ -24,12 +23,25 @@ function app(){
   trx:0
  },
 
- tab(s){ return this.section===s?'active-tab block':'block'; },
+ get convertedINR(){
+  return this.amount * (this.rates[this.coin] || 0);
+ },
+
+ tab(s){
+  return this.section===s ? 'active-tab block' : 'block';
+ },
 
  submit(){
-  if(this.amount<500) return alert('Minimum $500');
+  if(this.amount < 500) return alert('Minimum $500');
+
   this.pending++;
-  this.txs.push({amount:this.amount, coin:this.coin.toUpperCase(), status:'pending'});
+
+  this.txs.push({
+    id: Date.now(),
+    amount: this.amount,
+    coin: this.coin,
+    status: 'pending'
+  });
  },
 
  approveTx(i){
@@ -37,28 +49,18 @@ function app(){
   if(!tx || tx.status==='approved') return;
 
   this.usd += tx.amount;
-  this.inr += tx.amount * this.rates[tx.coin.toLowerCase()];
+  this.inr += tx.amount * this.rates[tx.coin];
 
   tx.status = 'approved';
   this.pending--;
  },
 
  withdraw(){
-  const minUSD = 500;
-  const minINR = 500 * 83;
-
-  if(this.withdrawType==='inr'){
-    if(this.withdrawAmt < minINR) return alert('Minimum ₹' + minINR);
-    if(this.withdrawAmt > this.inr) return alert('Insufficient balance');
-
-    this.inr -= this.withdrawAmt;
-  } else {
-    if(this.withdrawAmt < minUSD) return alert('Minimum $500');
-    if(this.withdrawAmt > this.usd) return alert('Insufficient balance');
-
-    this.usd -= this.withdrawAmt;
+  if(this.withdrawAmt > this.inr){
+    return alert('Insufficient balance');
   }
 
+  this.inr -= this.withdrawAmt;
   this.withdrawals.push(this.withdrawAmt);
  },
 
@@ -73,15 +75,36 @@ function app(){
     this.rates.trx = data.tron.inr;
     this.rates.usdt = data.tether.inr;
   }catch(e){
-    console.log('Price fetch error', e);
+    console.log(e);
   }
  },
 
  init(){
+  const saved = localStorage.getItem('cryptoApp');
+
+  if(saved){
+    Object.assign(this, JSON.parse(saved));
+  }
+
   this.fetchPrices();
-  setInterval(()=>this.fetchPrices(), 10000);
+
+  setInterval(()=>this.fetchPrices(), 30000);
+
+  this.$watch(
+    () => [this.usd, this.inr, this.txs, this.withdrawals],
+    () => {
+      localStorage.setItem('cryptoApp', JSON.stringify({
+        usd:this.usd,
+        inr:this.inr,
+        txs:this.txs,
+        withdrawals:this.withdrawals
+      }));
+    }
+  );
  },
 
- logout(){ this.page='landing'; }
+ logout(){
+  this.page='landing';
+ }
  }
 }
