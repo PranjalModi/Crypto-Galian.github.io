@@ -73,57 +73,54 @@ body { font-family: 'Poppins', sans-serif; }
 <button @click="section='profile'" :class="tab('profile')">👤 Profile</button>
 </div>
 
-  
 <div x-data="{ active: 'dashboard' }"
      class="fixed bottom-0 left-1/2 -translate-x-1/2 w-[95%] md:hidden z-50">
   
-  <div class="relative py-3 bg-white/90 backdrop-blur-md shadow-md rounded-t-2xl border">
+  <div class="relative flex items-center justify-between py-3 
+              bg-white/90 backdrop-blur-md 
+              shadow-md rounded-t-2xl border">
 
-    <!-- Sliding Bubble (UNCHANGED) -->
-    <div 
-      class="absolute top-2 bottom-2 w-[20%] bg-blue-100 rounded-xl transition-all duration-300"
-      :style="{
-        left: '50%',
-        transform: `
-          translateX(-50%) 
-          translateX(${
-            active==='dashboard' ? '-150%' :
-            active==='sell' ? '-50%' :
-            active==='withdraw' ? '50%' :
-            '150%'
-          })
-        `
-      }">
-    </div>
+    <!-- Sliding Bubble (100% responsive) -->
+<div 
+  class="absolute top-2 bottom-2 w-[20%] bg-blue-100 rounded-xl transition-all duration-300"
+  :class="{
+    'left-[2.5%]': active==='dashboard',
+    'left-[27.5%]': active==='sell',
+    'left-[52.5%]': active==='withdraw',
+    'left-[77.5%]': active==='profile'
+  }">
+</div>
+    <!-- Buttons -->
+    <button 
+      @click="active='dashboard'; section='dashboard'" 
+      class="relative z-10 w-[25%] text-lg text-center">
+      🏠
+    </button>
 
-    <!-- ICONS (CENTER-BASED POSITIONS MATCH SLIDER) -->
-    <div class="relative h-10">
+    <button 
+      @click="active='sell'; section='sell'" 
+      class="relative z-10 w-[25%] text-lg text-center">
+      💰
+    </button>
 
-      <button @click="active='dashboard'; section='dashboard'"
-        class="absolute left-[12.5%] -translate-x-1/2 text-lg z-10">
-        🏠
-      </button>
+    <button 
+      @click="active='withdraw'; section='withdraw'" 
+      class="relative z-10 w-[25%] text-lg text-center">
+      💸
+    </button>
 
-      <button @click="active='sell'; section='sell'"
-        class="absolute left-[37.5%] -translate-x-1/2 text-lg z-10">
-        💰
-      </button>
-
-      <button @click="active='withdraw'; section='withdraw'"
-        class="absolute left-[62.5%] -translate-x-1/2 text-lg z-10">
-        💸
-      </button>
-
-      <button @click="active='profile'; section='profile'"
-        class="absolute left-[87.5%] -translate-x-1/2 text-lg z-10">
-        👤
-      </button>
-
-    </div>
+    <button 
+      @click="active='profile'; section='profile'" 
+      class="relative z-10 w-[25%] text-lg text-center">
+      👤
+    </button>
 
   </div>
+
 </div>
+
   
+
 </aside>
 
 <main class="flex-1 p-4 pb-24 md:pb-4">
