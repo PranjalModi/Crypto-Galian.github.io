@@ -73,31 +73,30 @@ body { font-family: 'Poppins', sans-serif; }
 <button @click="section='profile'" :class="tab('profile')">👤 Profile</button>
 </div>
 
-<div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-[95%] md:hidden z-50">
-  
-  <div class="relative flex items-center justify-between px-4 py-3 
-              bg-white/90 backdrop-blur-md 
-              shadow-md rounded-t-2xl border">
+<div x-data="navSlider()" 
+     class="fixed bottom-4 left-1/2 -translate-x-1/2 md:hidden z-50">
 
-    <!-- Sliding Indicator -->
+  <div 
+    @touchstart="start($event)" 
+    @touchmove="move($event)" 
+    @touchend="end()"
+    class="relative flex items-center justify-between gap-8 px-6 py-3 
+           bg-white/80 backdrop-blur-lg 
+           shadow-lg rounded-full border w-[280px]">
+
+    <!-- Sliding Pill -->
     <div 
-      class="absolute bottom-2 h-10 w-12 bg-blue-100 rounded-xl transition-all duration-300"
-      :class="{
-        'left-[5%]': section==='dashboard',
-        'left-[30%]': section==='sell',
-        'left-[55%]': section==='withdraw',
-        'left-[80%]': section==='profile'
-      }">
+      class="absolute top-1 bottom-1 w-12 bg-blue-100 rounded-full transition-all duration-300"
+      :style="'left:' + sliderX + 'px'">
     </div>
 
     <!-- Buttons -->
-    <button @click="section='dashboard'" class="relative z-10 text-lg">🏠</button>
-    <button @click="section='sell'" class="relative z-10 text-lg">💰</button>
-    <button @click="section='withdraw'" class="relative z-10 text-lg">💸</button>
-    <button @click="section='profile'" class="relative z-10 text-lg">👤</button>
+    <button @click="go(0)" class="relative z-10 text-lg">🏠</button>
+    <button @click="go(1)" class="relative z-10 text-lg">💰</button>
+    <button @click="go(2)" class="relative z-10 text-lg">💸</button>
+    <button @click="go(3)" class="relative z-10 text-lg">👤</button>
 
   </div>
-
 </div>
 
 </aside>
