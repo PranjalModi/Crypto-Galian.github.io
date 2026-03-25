@@ -80,21 +80,46 @@ body { font-family: 'Poppins', sans-serif; }
               bg-white/90 backdrop-blur-md 
               shadow-md rounded-t-2xl border">
 
-    <!-- Sliding Bubble -->
-<div class="absolute top-2 bottom-2 w-12 bg-blue-100 rounded-xl transition-all duration-300"
-  :class="{
-    'left-[6%]': active==='dashboard',
-    'left-[31%]': active==='sell',
-    'left-[56%]': active==='withdraw',
-    'left-[81%]': active==='profile'
-  }">
-</div>
+    <!-- Sliding Bubble (Perfect Center) -->
+    <div 
+      class="absolute top-2 bottom-2 w-12 bg-blue-100 rounded-xl transition-all duration-300 ease-out"
+      :style="{
+        left: `calc((100% / 4) * ${
+          active==='dashboard' ? 0 :
+          active==='sell' ? 1 :
+          active==='withdraw' ? 2 : 3
+        } + (100% / 4 - 3rem) / 2)`
+      }">
+    </div>
 
     <!-- Buttons -->
-    <button @click="active='dashboard'; section='dashboard'" class="relative z-10 flex-1 text-lg text-center">🏠</button>
-    <button @click="active='sell'; section='sell'" class="relative z-10 flex-1 text-lg text-center">💰</button>
-    <button @click="active='withdraw'; section='withdraw'" class="relative z-10 flex-1 text-lg text-center">💸</button>
-    <button @click="active='profile'; section='profile'" class="relative z-10 flex-1 text-lg text-center">👤</button>
+    <button 
+      @click="active='dashboard'; section='dashboard'" 
+      class="relative z-10 flex-1 text-lg text-center"
+      :class="active==='dashboard' ? 'text-blue-600 scale-110' : 'text-gray-600'">
+      🏠
+    </button>
+
+    <button 
+      @click="active='sell'; section='sell'" 
+      class="relative z-10 flex-1 text-lg text-center"
+      :class="active==='sell' ? 'text-blue-600 scale-110' : 'text-gray-600'">
+      💰
+    </button>
+
+    <button 
+      @click="active='withdraw'; section='withdraw'" 
+      class="relative z-10 flex-1 text-lg text-center"
+      :class="active==='withdraw' ? 'text-blue-600 scale-110' : 'text-gray-600'">
+      💸
+    </button>
+
+    <button 
+      @click="active='profile'; section='profile'" 
+      class="relative z-10 flex-1 text-lg text-center"
+      :class="active==='profile' ? 'text-blue-600 scale-110' : 'text-gray-600'">
+      👤
+    </button>
 
   </div>
 
