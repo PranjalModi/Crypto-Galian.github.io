@@ -73,30 +73,19 @@ body { font-family: 'Poppins', sans-serif; }
 <button @click="section='profile'" :class="tab('profile')">👤 Profile</button>
 </div>
 
-<!-- ✅ FIXED MOBILE NAVBAR -->
-<div x-data="navSlider($root)" x-init="init()"
-     class="fixed bottom-4 left-1/2 -translate-x-1/2 md:hidden z-50">
+<div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-[95%] md:hidden z-50">
+  
+  <div class="flex items-center justify-center gap-6 py-3 
+              bg-white/90 backdrop-blur-md 
+              shadow-md rounded-t-2xl border">
 
-  <div x-ref="nav"
-    @touchstart="start($event)" 
-    @touchmove="move($event)" 
-    @touchend="end()"
-    class="relative flex items-center justify-between px-6 py-3 w-[280px]
-           bg-white/80 backdrop-blur-lg 
-           shadow-lg rounded-full border">
-
-    <!-- Slider -->
-    <div 
-      class="absolute top-1 bottom-1 w-12 bg-blue-100 rounded-full transition-all duration-300 pointer-events-none"
-      :style="{ left: sliderX + 'px' }">
-    </div>
-
-    <button @click="go(0)" class="relative z-10 text-lg flex-1">🏠</button>
-    <button @click="go(1)" class="relative z-10 text-lg flex-1">💰</button>
-    <button @click="go(2)" class="relative z-10 text-lg flex-1">💸</button>
-    <button @click="go(3)" class="relative z-10 text-lg flex-1">👤</button>
+    <button @click="section='dashboard'" class="text-lg">🏠</button>
+    <button @click="section='sell'" class="text-lg">💰</button>
+    <button @click="section='withdraw'" class="text-lg">💸</button>
+    <button @click="section='profile'" class="text-lg">👤</button>
 
   </div>
+
 </div>
 
 </aside>
@@ -245,48 +234,6 @@ class="mx-auto mt-2">
 </main>
 </div>
 
-
-<script>
-function navSlider(root){
-  return {
-    sliderX: 0,
-    current: 0,
-    startX: 0,
-    itemWidth: 0,
-
-    sections: ['dashboard','sell','withdraw','profile'],
-
-    init(){
-      this.$nextTick(() => {
-        this.itemWidth = this.$refs.nav.offsetWidth / 4
-        this.sliderX = this.itemWidth * this.sections.indexOf(root.section || 'dashboard')
-      })
-    },
-
-    go(i){
-      this.current = i
-      this.sliderX = this.itemWidth * i
-      root.section = this.sections[i]
-    },
-
-    start(e){
-      this.startX = e.touches[0].clientX
-    },
-
-    move(e){
-      let dx = e.touches[0].clientX - this.startX
-      let newX = this.sliderX + dx
-      newX = Math.max(0, Math.min(newX, this.itemWidth * 3))
-      this.sliderX = newX
-    },
-
-    end(){
-      let index = Math.round(this.sliderX / this.itemWidth)
-      this.go(index)
-    }
-  }
-}
-</script>
 
 <script>
 function app(){
