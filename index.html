@@ -73,31 +73,87 @@ body { font-family: 'Poppins', sans-serif; }
 <button @click="section='profile'" :class="tab('profile')">👤 Profile</button>
 </div>
 
-<div x-data="navSlider()" 
-     class="fixed bottom-4 left-1/2 -translate-x-1/2 md:hidden z-50">
-
-  <div 
-    @touchstart="start($event)" 
-    @touchmove="move($event)" 
-    @touchend="end()"
-    class="relative flex items-center justify-between gap-8 px-6 py-3 
+<div class="fixed bottom-4 left-1/2 -translate-x-1/2 md:hidden z-50">
+  
+  <div id="navBar"
+    class="relative flex items-center justify-between px-6 py-3 w-[280px]
            bg-white/80 backdrop-blur-lg 
-           shadow-lg rounded-full border w-[280px]">
+           shadow-lg rounded-full border">
 
     <!-- Sliding Pill -->
-    <div 
-      class="absolute top-1 bottom-1 w-12 bg-blue-100 rounded-full transition-all duration-300"
-      :style="'left:' + sliderX + 'px'">
+    <div id="slider"
+      class="absolute top-1 bottom-1 w-12 bg-blue-100 rounded-full transition-all duration-300 pointer-events-none">
     </div>
 
     <!-- Buttons -->
-    <button @click="go(0)" class="relative z-10 text-lg">🏠</button>
-    <button @click="go(1)" class="relative z-10 text-lg">💰</button>
-    <button @click="go(2)" class="relative z-10 text-lg">💸</button>
-    <button @click="go(3)" class="relative z-10 text-lg">👤</button>
+    <button class="nav-btn relative z-10 text-lg">🏠</button>
+    <button class="nav-btn relative z-10 text-lg">💰</button>
+    <button class="nav-btn relative z-10 text-lg">💸</button>
+    <button class="nav-btn relative z-10 text-lg">👤</button>
 
   </div>
+
 </div>
+
+<script>
+(function(){
+
+  const nav = document.getElementById("navBar");
+  const slider = document.getElementById("slider");
+  const buttons = document.querySelectorAll(".nav-btn");
+
+  let current = 0;
+  let startX = 0;
+  let sliderX = 0;
+
+  function getItemWidth(){
+    return nav.offsetWidth / buttons.length;
+  }
+
+  function updateSlider(index){
+    const itemWidth = getItemWidth();
+    sliderX = itemWidth * index;
+    slider.style.left = sliderX + "px";
+    current = index;
+  }
+
+  // CLICK
+  buttons.forEach((btn, i) => {
+    btn.addEventListener("click", () => {
+      updateSlider(i);
+    });
+  });
+
+  // TOUCH START
+  nav.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  // TOUCH MOVE
+  nav.addEventListener("touchmove", (e) => {
+    let dx = e.touches[0].clientX - startX;
+    let newX = sliderX + dx;
+
+    const max = nav.offsetWidth - slider.offsetWidth;
+    newX = Math.max(0, Math.min(newX, max));
+
+    slider.style.left = newX + "px";
+  });
+
+  // TOUCH END (SNAP)
+  nav.addEventListener("touchend", () => {
+    const itemWidth = getItemWidth();
+    let index = Math.round(parseInt(slider.style.left || 0) / itemWidth);
+    updateSlider(index);
+  });
+
+  // INIT
+  window.addEventListener("load", () => {
+    updateSlider(0);
+  });
+
+})();
+</script>
 
 </aside>
 
