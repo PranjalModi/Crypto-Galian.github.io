@@ -81,15 +81,21 @@ body { font-family: 'Poppins', sans-serif; }
               shadow-md rounded-t-2xl border">
 
     <!-- Sliding Bubble (100% responsive) -->
-    <div 
-      class="absolute top-2 bottom-2 w-[20%] bg-blue-100 rounded-xl transition-all duration-300"
-      :class="{
-        'left-0': active==='dashboard',
-        'left-[25%]': active==='sell',
-        'left-[50%]': active==='withdraw',
-        'left-[75%]': active==='profile'
-      }">
-    </div>
+<div 
+  class="absolute top-2 bottom-2 w-[20%] bg-blue-100 rounded-xl transition-all duration-300"
+  :style="{
+    left: '50%',
+    transform: `
+      translateX(-50%) 
+      translateX(${
+        active==='dashboard' ? '-150%' :
+        active==='sell' ? '-50%' :
+        active==='withdraw' ? '50%' :
+        '150%'
+      })
+    `
+  }">
+</div>
 
     <!-- Buttons -->
     <button 
