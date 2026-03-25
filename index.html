@@ -76,56 +76,59 @@ body { font-family: 'Poppins', sans-serif; }
 <div x-data="{ active: 'dashboard' }"
      class="fixed bottom-0 left-1/2 -translate-x-1/2 w-[95%] md:hidden z-50">
   
-  <div class="relative flex items-center justify-between py-3 
+  <div class="relative flex py-3 
               bg-white/90 backdrop-blur-md 
               shadow-md rounded-t-2xl border">
 
-    <!-- Sliding Bubble (100% responsive) -->
-<div 
-  class="absolute top-2 bottom-2 w-[20%] bg-blue-100 rounded-xl transition-all duration-300"
-  :style="{
-    left: '50%',
-    transform: `
-      translateX(-50%) 
-      translateX(${
-        active==='dashboard' ? '-150%' :
-        active==='sell' ? '-50%' :
-        active==='withdraw' ? '50%' :
-        '150%'
-      })
-    `
-  }">
-</div>
+    <!-- Sliding Bubble (center-based) -->
+    <div 
+      class="absolute top-2 bottom-2 w-[20%] bg-blue-100 rounded-xl transition-all duration-300"
+      :style="{
+        left: '50%',
+        transform: `
+          translateX(-50%) 
+          translateX(${
+            active==='dashboard' ? '-150%' :
+            active==='sell' ? '-50%' :
+            active==='withdraw' ? '50%' :
+            '150%'
+          })
+        `
+      }">
+    </div>
 
     <!-- Buttons -->
     <button 
       @click="active='dashboard'; section='dashboard'" 
-      class="relative z-10 w-[25%] text-lg text-center">
+      class="relative z-10 flex-1 flex justify-center items-center text-lg"
+      :class="active==='dashboard' ? 'text-blue-600 scale-110' : 'text-gray-600'">
       🏠
     </button>
 
     <button 
       @click="active='sell'; section='sell'" 
-      class="relative z-10 w-[25%] text-lg text-center">
+      class="relative z-10 flex-1 flex justify-center items-center text-lg"
+      :class="active==='sell' ? 'text-blue-600 scale-110' : 'text-gray-600'">
       💰
     </button>
 
     <button 
       @click="active='withdraw'; section='withdraw'" 
-      class="relative z-10 w-[25%] text-lg text-center">
+      class="relative z-10 flex-1 flex justify-center items-center text-lg"
+      :class="active==='withdraw' ? 'text-blue-600 scale-110' : 'text-gray-600'">
       💸
     </button>
 
     <button 
       @click="active='profile'; section='profile'" 
-      class="relative z-10 w-[25%] text-lg text-center">
+      class="relative z-10 flex-1 flex justify-center items-center text-lg"
+      :class="active==='profile' ? 'text-blue-600 scale-110' : 'text-gray-600'">
       👤
     </button>
 
   </div>
 
 </div>
-
 </aside>
 
 <main class="flex-1 p-4 pb-24 md:pb-4">
