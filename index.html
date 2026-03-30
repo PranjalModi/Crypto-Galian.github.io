@@ -101,8 +101,8 @@ body, p, span, h1, h2, h3 {
             Open Dashboard
         </button>
 
-        <button onclick="showPage('toolsPage')" 
-            class="w-full py-4 rounded-xl border border-white/20 text-white/80 hover:text-white hover:border-white transition">
+        <button @click="page='tools'" 
+            class="w-full py-4 rounded-xl border border-white/20">
             View Tools & Analytics
         </button>
     </div>
@@ -179,12 +179,13 @@ body, p, span, h1, h2, h3 {
 </footer>
 
 <!-- TOOLS PAGE -->
-<div id="toolsPage" class="page">
+<div x-show="page==='tools'">
 
 <section class="text-center py-16">
     <h1 class="text-4xl font-semibold mb-4">Tools & Analytics</h1>
 
-    <button onclick="showPage('homePage')" 
+    <!-- FIXED BACK BUTTON -->
+    <button @click="page='landing'" 
         class="mt-6 px-6 py-2 border border-white/20 rounded-lg">
         ← Back
     </button>
@@ -192,7 +193,6 @@ body, p, span, h1, h2, h3 {
 
 <section class="px-6 pb-20 max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
 
-<!-- REFERRAL -->
 <div class="glass p-8 rounded-2xl">
     <h3 class="text-xl font-semibold mb-6">Referral Earnings</h3>
 
@@ -207,11 +207,10 @@ body, p, span, h1, h2, h3 {
     <input id="refs" type="number" placeholder="Referrals" class="w-full mb-4 p-3 rounded bg-black/30">
     <input id="price" type="number" placeholder="Package Price" class="w-full mb-4 p-3 rounded bg-black/30">
 
-    <button onclick="calcReferral()" class="w-full py-3 glow-btn rounded-lg">Calculate</button>
+    <button onclick="calcReferral()" class="w-full py-3 bg-blue-600 rounded-lg">Calculate</button>
     <p id="refResult" class="mt-4"></p>
 </div>
 
-<!-- RETURN -->
 <div class="glass p-8 rounded-2xl">
     <h3 class="text-xl font-semibold mb-6">Package Return</h3>
 
@@ -222,7 +221,7 @@ body, p, span, h1, h2, h3 {
 
     <input id="invest" type="number" placeholder="Investment" class="w-full mb-4 p-3 rounded bg-black/30">
 
-    <button onclick="calcReturn()" class="w-full py-3 glow-btn rounded-lg">Calculate</button>
+    <button onclick="calcReturn()" class="w-full py-3 bg-green-600 rounded-lg">Calculate</button>
     <p id="returnResult" class="mt-4"></p>
 </div>
 
@@ -231,10 +230,11 @@ body, p, span, h1, h2, h3 {
 </div>
 
 <script>
-function showPage(id){
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    window.scrollTo(0,0);
+function app(){
+return{
+    page:'landing',
+    earnings:0
+}
 }
 
 function calcReferral(){
@@ -251,16 +251,7 @@ function calcReturn(){
     let total = i * m;
     document.getElementById("returnResult").innerText = "Return: " + total + " USDT";
 }
-
-function openDashboard(){
-    alert("Dashboard coming soon 🚀");
-}
-
-function scrollToBottom(){
-    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-}
 </script>
-</div>
 
 
 <!-- DASHBOARD -->
