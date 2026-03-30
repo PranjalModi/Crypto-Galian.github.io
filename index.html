@@ -8,273 +8,49 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body { 
-  font-family: 'Inter', sans-serif; 
-  background: radial-gradient(circle at top, #0f172a, #020617);
-}
-
-/* Premium Glass */
-.glass {
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(18px);
-  border: 1px solid rgba(255,255,255,0.05);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-}
-
-/* Buttons */
-.btn-primary {
-  background: linear-gradient(135deg, #2563eb, #1e40af);
-  transition: all 0.3s ease;
-}
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(37,99,235,0.4);
-}
-
-.btn-success {
-  background: linear-gradient(135deg, #16a34a, #166534);
-}
-.btn-success:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(22,163,74,0.4);
-}
-
-/* Sidebar */
-.sidebar {
-  background: rgba(2, 6, 23, 0.9);
-  border-right: 1px solid rgba(255,255,255,0.05);
-}
-
-/* Inputs */
-input, select {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  color: #e5e7eb;
-}
-input::placeholder {
-  color: #9ca3af;
-}
-
-/* Text Colors */
-body, p, span, h1, h2, h3 {
-  color: #e5e7eb;
-}
+body { font-family: 'Poppins', sans-serif; }
+.glass { backdrop-filter: blur(16px); background: rgba(255,255,255,0.8); }
+.active-tab { color:#2563eb; border-bottom:2px solid #2563eb; }
 </style>
 </head>
 
-<body class="text-gray-200" x-data="app()" x-init="init()">
+<body class="bg-gradient-to-br from-blue-50 to-gray-100 text-gray-800" x-data="app()" x-init="init()">
 
 <!-- LANDING -->
-<header class="flex items-center justify-between px-6 py-4 border-b border-white/10">
-    <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600"></div>
-        <h1 class="text-lg font-semibold tracking-wide">Crypto Galian</h1>
-    </div>
-</header>
+<div x-show="page==='landing'" class="min-h-screen flex flex-col justify-center items-center text-center px-4">
+  <h1 class="text-5xl font-bold text-blue-600 mb-4">🚀 Crypto Galian</h1>
+  <p class="text-gray-600 mb-6">Smart Network | Referral & Package Earnings</p>
 
-<div x-show="page==='landing'">
-
-<div id="homePage" class="page active">
-
-<!-- HERO -->
-<section class="min-h-screen flex flex-col items-center justify-center text-center px-6">
-    <div class="glass px-6 py-2 rounded-full text-sm mb-6 tracking-wide">
-        Advanced Crypto Intelligence Platform
-    </div>
-
-    <h1 class="text-4xl md:text-6xl font-semibold leading-tight max-w-4xl">
-        Next-Generation Crypto
-        <br>
-        <span class="gradient-text">Analytics & Market Intelligence</span>
-    </h1>
-
-    <p class="text-white/60 mt-6 max-w-xl">
-        Track markets, analyze trends, and manage your crypto portfolio 
-        with a powerful and intuitive dashboard built for modern traders.
-    </p>
-
-    <div class="mt-10 w-full max-w-sm space-y-4">
-        <button @click="page='dashboard'" class="w-full py-4 rounded-xl glow-btn text-lg">
-            Open Dashboard
-        </button>
-
-        <button @click="page='tools'" 
-            class="w-full py-4 rounded-xl border border-white/20">
-            View Tools & Analytics
-        </button>
-    </div>
-</section>
-
-<!-- FEATURES -->
-<section class="py-24 px-6 text-center">
-    <h2 class="text-4xl md:text-5xl font-semibold mb-6">
-        Transforming Crypto Intelligence
-    </h2>
-
-    <p class="text-white/60 max-w-3xl mx-auto mb-16">
-        Crypto Galian provides advanced tools and insights to simplify crypto investing,
-        helping users make smarter and faster decisions in dynamic markets.
-    </p>
-
-    <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-
-        <div class="glass p-8 rounded-2xl">
-            <h3 class="text-xl font-semibold mb-3">Advanced Analytics</h3>
-            <p class="text-white/60">Real-time market data and trend analysis.</p>
-        </div>
-
-        <div class="glass p-8 rounded-2xl">
-            <h3 class="text-xl font-semibold mb-3">Portfolio Tracking</h3>
-            <p class="text-white/60">Track your assets and performance.</p>
-        </div>
-
-        <div class="glass p-8 rounded-2xl">
-            <h3 class="text-xl font-semibold mb-3">Global Insights</h3>
-            <p class="text-white/60">Stay connected to global crypto markets.</p>
-        </div>
-
-    </div>
-</section>
-
-<!-- NETWORK -->
-<section class="py-24 px-6 text-center">
-    <h2 class="text-4xl md:text-5xl font-semibold mb-6">
-        Intelligent Network & Growth System
-    </h2>
-</section>
-
-<!-- CTA -->
-<section class="py-24 px-6 text-center">
-    <div class="glass max-w-4xl mx-auto p-12 rounded-3xl">
-        <h2 class="text-3xl md:text-4xl font-semibold mb-6">
-            Start Your Crypto Journey Today
-        </h2>
-
-        <button @click="page='dashboard'" class="px-10 py-4 rounded-xl glow-btn text-lg">
-            Get Started
-        </button>
-    </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="border-t border-white/10 py-10 px-6 text-center text-white/50">
-
-    <h3 class="text-lg text-white mb-2">Crypto Galian</h3>
-    <p class="mb-4">Advanced Crypto Intelligence Platform</p>
-
-    <div class="flex justify-center gap-6 text-sm">
-        <a href="#" onclick="showPage('homePage')" class="hover:text-white">Home</a>
-        <a href="#" onclick="openDashboard()" class="hover:text-white">Dashboard</a>
-        <a href="#" onclick="showPage('toolsPage')" class="hover:text-white">Tools</a>
-        <a href="#" onclick="scrollToBottom()" class="hover:text-white">Contact</a>
-    </div>
-
-    <p class="mt-6 text-xs text-white/40">
-        © 2026 Crypto Galian. All rights reserved.
-    </p>
-
-</footer>
-
-<!-- TOOLS PAGE -->
-<div x-show="page==='tools'">
-
-<section class="text-center py-16">
-    <h1 class="text-4xl font-semibold mb-4">Tools & Analytics</h1>
-
-    <!-- FIXED BACK BUTTON -->
-    <button @click="page='landing'" 
-        class="mt-6 px-6 py-2 border border-white/20 rounded-lg">
-        ← Back
-    </button>
-</section>
-
-<section class="px-6 pb-20 max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
-
-<div class="glass p-8 rounded-2xl">
-    <h3 class="text-xl font-semibold mb-6">Referral Earnings</h3>
-
-    <select id="package" class="w-full mb-4 p-3 rounded bg-black/30">
-        <option value="5">Bronze (5%)</option>
-        <option value="10">Silver (10%)</option>
-        <option value="15">Gold (15%)</option>
-        <option value="20">Platinum (20%)</option>
-        <option value="30">Diamond (30%)</option>
-    </select>
-
-    <input id="refs" type="number" placeholder="Referrals" class="w-full mb-4 p-3 rounded bg-black/30">
-    <input id="price" type="number" placeholder="Package Price" class="w-full mb-4 p-3 rounded bg-black/30">
-
-    <button onclick="calcReferral()" class="w-full py-3 bg-blue-600 rounded-lg">Calculate</button>
-    <p id="refResult" class="mt-4"></p>
+  <button @click="page='dashboard'" class="bg-blue-600 text-white px-8 py-3 rounded-xl shadow-lg">
+    Enter Dashboard
+  </button>
 </div>
-
-<div class="glass p-8 rounded-2xl">
-    <h3 class="text-xl font-semibold mb-6">Package Return</h3>
-
-    <select id="role" class="w-full mb-4 p-3 rounded bg-black/30">
-        <option value="4">Master (4X)</option>
-        <option value="10">Grandmaster (10X)</option>
-    </select>
-
-    <input id="invest" type="number" placeholder="Investment" class="w-full mb-4 p-3 rounded bg-black/30">
-
-    <button onclick="calcReturn()" class="w-full py-3 bg-green-600 rounded-lg">Calculate</button>
-    <p id="returnResult" class="mt-4"></p>
-</div>
-
-</section>
-
-</div>
-
-<script>
-function app(){
-return{
-    page:'landing',
-    earnings:0
-}
-}
-
-function calcReferral(){
-    let p = document.getElementById("package").value;
-    let r = document.getElementById("refs").value;
-    let price = document.getElementById("price").value;
-    let total = (price * p / 100) * r;
-    document.getElementById("refResult").innerText = "Earnings: " + total + " USDT";
-}
-
-function calcReturn(){
-    let m = document.getElementById("role").value;
-    let i = document.getElementById("invest").value;
-    let total = i * m;
-    document.getElementById("returnResult").innerText = "Return: " + total + " USDT";
-}
-</script>
-
 
 <!-- DASHBOARD -->
 <div x-show="page==='dashboard'" class="flex w-full min-h-screen">
 
 <!-- SIDEBAR -->
-<aside class="hidden md:flex flex-col w-64 sidebar p-5 space-y-4">
-<h2 class="text-2xl font-bold text-blue-500 mb-6">Crypto Galian</h2>
+<aside class="hidden md:flex flex-col w-64 bg-white shadow-lg p-5 space-y-4">
+<h2 class="text-2xl font-bold text-blue-600 mb-6">🚀 Crypto Galian</h2>
 
-<button @click="section='dashboard'" :class="navClass('dashboard')">Dashboard</button>
-<button @click="section='join'" :class="navClass('join')">Join Plan</button>
-<button @click="section='transactions'" :class="navClass('transactions')">Transactions</button>
-<button @click="section='income'" :class="navClass('income')">Income</button>
-<button @click="section='withdraw'" :class="navClass('withdraw')">Withdraw</button>
-<button @click="section='profile'" :class="navClass('profile')">Profile</button>
+<button @click="section='dashboard'" :class="navClass('dashboard')">🏠 Dashboard</button>
+<button @click="section='join'" :class="navClass('join')">💼 Join Plan</button>
+<button @click="section='transactions'" :class="navClass('transactions')">📊 Transactions</button>
+<button @click="section='income'" :class="navClass('income')">📈 Income</button>
+<button @click="section='withdraw'" :class="navClass('withdraw')">💸 Withdraw</button>
+<button @click="section='profile'" :class="navClass('profile')">👤 Profile</button>
 </aside>
 
 <!-- MOBILE NAV -->
 <div x-data="{ active: 'dashboard' }"
      class="fixed bottom-3 left-1/2 -translate-x-1/2 w-[92%] md:hidden z-50">
-  <div class="relative flex justify-between items-center px-2 py-3 bg-black/80 backdrop-blur-lg rounded-2xl shadow-lg">
 
-    <div class="absolute top-2 bottom-2 w-[22%] bg-blue-600/20 rounded-xl transition-all duration-300"
+  <div class="relative flex justify-between items-center px-2 py-3 bg-white/90 backdrop-blur-lg rounded-2xl shadow-lg">
+
+    <div class="absolute top-2 bottom-2 w-[22%] bg-blue-100 rounded-xl transition-all duration-300"
       :class="{
         'left-[2%]': active==='dashboard',
         'left-[26%]': active==='join',
@@ -282,44 +58,48 @@ function calcReturn(){
         'left-[74%]': active==='profile'
       }"></div>
 
-    <button @click="active='dashboard';section='dashboard'" class="relative z-10 w-1/4">🏠</button>
-    <button @click="active='join';section='join'" class="relative z-10 w-1/4">💼</button>
-    <button @click="active='withdraw';section='withdraw'" class="relative z-10 w-1/4">💸</button>
-    <button @click="active='profile';section='profile'" class="relative z-10 w-1/4">👤</button>
+    <button @click="active='dashboard';section='dashboard'" class="relative z-10 w-1/4 text-xl flex justify-center">🏠</button>
+    <button @click="active='join';section='join'" class="relative z-10 w-1/4 text-xl flex justify-center">💼</button>
+    <button @click="active='withdraw';section='withdraw'" class="relative z-10 w-1/4 text-xl flex justify-center">💸</button>
+    <button @click="active='profile';section='profile'" class="relative z-10 w-1/4 text-xl flex justify-center">👤</button>
+
   </div>
 </div>
 
 <!-- MAIN -->
 <main class="flex-1 w-full p-6 pb-24 md:pb-6">
 
-<h2 class="text-2xl font-bold mb-4 capitalize text-white" x-text="section"></h2>
+<h2 class="text-2xl font-bold mb-4 capitalize" x-text="section"></h2>
 
 <!-- DASHBOARD -->
 <div x-show="section==='dashboard'" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
 <div class="glass p-5 text-center rounded-xl">
 <p>Total Earnings</p>
-<p class="text-2xl text-green-400 font-bold" x-text="earnings"></p>
+<p class="text-2xl text-green-600 font-bold" x-text="earnings"></p>
 </div>
 
 <div class="glass p-5 text-center rounded-xl">
 <p>Referrals</p>
-<p class="text-2xl text-blue-400 font-bold" x-text="referrals"></p>
+<p class="text-2xl text-blue-600 font-bold" x-text="referrals"></p>
 </div>
 
 <div class="glass p-5 text-center rounded-xl">
 <p>Active Plan</p>
-<p class="text-2xl text-purple-400 font-bold" x-text="planName"></p>
+<p class="text-2xl text-purple-600 font-bold" x-text="planName"></p>
 </div>
 
 <div class="glass p-5 text-center rounded-xl">
 <p>Extra Earnings</p>
-<p class="text-2xl text-green-400 font-bold" x-text="extraIncome"></p>
+<p class="text-2xl text-green-600 font-bold" x-text="extraIncome"></p>
 </div>
+
 </div>
 
 <!-- JOIN -->
 <div x-show="section==='join'" class="max-w-md space-y-3">
-<select x-model="package" class="w-full p-2 rounded-lg">
+
+<select x-model="package" class="w-full p-2 border rounded-lg">
 <option value="1000">Bronze - 1000 USDT (5%)</option>
 <option value="2000">Silver - 2000 USDT (10%)</option>
 <option value="3000">Gold - 3000 USDT (15%)</option>
@@ -327,50 +107,50 @@ function calcReturn(){
 <option value="5000">Diamond - 5000 USDT (30%)</option>
 </select>
 
-<select x-model="specialPlan" class="w-full p-2 rounded-lg">
+<select x-model="specialPlan" class="w-full p-2 border rounded-lg">
 <option value="0">No Upgrade</option>
 <option value="10000">Master - 10,000 USDT (4X)</option>
 <option value="20000">Grandmaster - 20,000 USDT (10X)</option>
 </select>
 
-<div class="glass p-3 text-center text-yellow-400 font-semibold">
+<div class="glass p-3 rounded-lg text-center text-orange-500 font-semibold">
 Your plan is not activated
 </div>
 
-<button @click="goPayment()" class="btn-primary text-white w-full py-2 rounded-lg">
+<button @click="goPayment()" class="bg-blue-600 text-white w-full py-2 rounded-lg">
 Activate Plan
 </button>
+
 </div>
 
 <!-- PAYMENT -->
-<div x-show="section==='payment'" class="max-w-md space-y-4">
+<div x-show="section==='payment'" class="max-w-md space-y-3">
 
-<button @click="section='join'" class="text-blue-400 font-semibold">Back</button>
+<button @click="section='join'" class="text-blue-600 font-semibold">⬅ Back</button>
+
+<h3 class="font-bold text-blue-600">Complete Payment</h3>
 
 <p>Total Plan Amount: <b x-text="payAmount"></b> USDT</p>
 
-<select x-model="payCoin" class="w-full p-2 rounded-lg">
-<option value="usdt">USDT</option>
-<option value="btc">BTC</option>
-<option value="eth">ETH</option>
-<option value="trx">TRX</option>
+<select x-model="payCoin" class="w-full p-2 border rounded-lg">
+<option value="usdt">USDT (TRC20)</option>
+<option value="btc">Bitcoin (BTC)</option>
+<option value="eth">Ethereum (ETH)</option>
+<option value="trx">Tron (TRX)</option>
 </select>
 
-<div class="glass p-4 text-center space-y-3 rounded-xl">
-
-<img :src="'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+wallets[payCoin]" 
-class="mx-auto rounded-lg shadow">
-
-<p class="text-lg font-bold" x-text="cryptoAmount()"></p>
-<p class="uppercase text-gray-400" x-text="payCoin"></p>
-
-<p class="text-blue-400 break-all text-sm" x-text="wallets[payCoin]"></p>
-
+<div class="glass p-3 rounded-lg text-center">
+<p>Send Amount</p>
+<p class="text-green-600 text-xl font-bold" x-text="cryptoAmount()"></p>
+<p class="text-sm mt-1" x-text="payCoin.toUpperCase()"></p>
+<p class="mt-2 text-sm">Wallet Address</p>
+<p class="text-blue-600 break-all" x-text="wallets[payCoin]"></p>
+<img :src="'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+wallets[payCoin]" class="mx-auto mt-2">
 </div>
 
-<input x-model="txHash" placeholder="Enter TX Hash" class="w-full p-2 rounded-lg">
+<input x-model="txHash" placeholder="Enter TX Hash" class="w-full p-2 border rounded-lg">
 
-<button @click="submitTx()" class="btn-success text-white w-full py-2 rounded-lg">
+<button @click="submitTx()" class="bg-green-600 text-white w-full py-2 rounded-lg">
 Submit Payment
 </button>
 
@@ -383,101 +163,55 @@ Submit Payment
 </template>
 
 <template x-for="t in txs">
-<div class="glass p-3 rounded-lg flex justify-between">
+<div class="glass p-3 rounded-lg flex justify-between items-center">
 <span>$<span x-text="t.amount"></span></span>
-<span class="text-yellow-400">pending</span>
+<span class="text-orange-500">pending</span>
 </div>
 </template>
 </div>
 
 <!-- INCOME -->
-<div x-show="section==='income'" class="grid grid-cols-2 gap-4">
-<div class="glass p-4 text-center">
+<div x-show="section==='income'" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+<div class="glass p-4 rounded-xl text-center">
 <p>Referral Income</p>
-<p>$<span x-text="refIncome"></span></p>
+<p class="text-xl font-bold text-green-600">$<span x-text="refIncome"></span></p>
 </div>
 
-<div class="glass p-4 text-center">
+<div class="glass p-4 rounded-xl text-center">
 <p>Package Income</p>
-<p>$<span x-text="pkgIncome"></span></p>
+<p class="text-xl font-bold text-blue-600">$<span x-text="pkgIncome"></span></p>
 </div>
 
-<div class="glass p-4 text-center">
-<p>Extra</p>
-<p>$<span x-text="extraIncome"></span></p>
+<div class="glass p-4 rounded-xl text-center">
+<p>Extra Earnings</p>
+<p class="text-xl font-bold text-purple-600">$<span x-text="extraIncome"></span></p>
 </div>
 
-<div class="glass p-4 text-center">
-<p>Total</p>
-<p>$<span x-text="earnings"></span></p>
+<div class="glass p-4 rounded-xl text-center">
+<p>Total Earnings</p>
+<p class="text-xl font-bold">$<span x-text="earnings"></span></p>
 </div>
 
-<button @click="addReferral()" class="col-span-2 btn-success text-white py-2 rounded">
+<div class="col-span-1 sm:col-span-2">
+<button @click="addReferral()" class="bg-green-600 text-white w-full py-2 rounded-lg">
 Add Referral
 </button>
 </div>
 
+</div>
+
 <!-- WITHDRAW -->
 <div x-show="section==='withdraw'" class="max-w-md space-y-3">
-<input x-model.number="withdrawAmt" placeholder="Amount" class="w-full p-2 rounded-lg">
+<input x-model.number="withdrawAmt" placeholder="Amount" class="w-full p-2 border rounded-lg">
 <p>Balance: $<span x-text="earnings"></span></p>
-<button @click="withdraw()" class="btn-success text-white w-full py-2 rounded-lg">Withdraw</button>
+<button @click="withdraw()" class="bg-green-600 text-white w-full py-2 rounded-lg">Withdraw</button>
 </div>
 
 <!-- PROFILE -->
-<div x-show="section==='profile'" class="space-y-6 max-w-5xl">
-
-<div class="glass p-6 rounded-xl flex justify-between">
-<div>
-<h2 class="text-2xl font-bold">Account Overview</h2>
-<p class="text-sm text-gray-400">Detailed account insights</p>
-</div>
-<div>
-<span class="px-3 py-1 rounded-full text-sm"
-:class="planName==='None'?'bg-red-500/20 text-red-400':'bg-green-500/20 text-green-400'">
-<span x-text="planName==='None'?'Inactive':'Active'"></span>
-</span>
-</div>
-</div>
-
-<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-<div class="glass p-4"><p>Plan</p><b x-text="planName"></b></div>
-<div class="glass p-4"><p>Referrals</p><b x-text="referrals"></b></div>
-<div class="glass p-4"><p>Earnings</p><b>$<span x-text="earnings"></span></b></div>
-<div class="glass p-4"><p>Extra</p><b>$<span x-text="extraIncome"></span></b></div>
-</div>
-
-<div class="glass p-5">
-<h3 class="font-bold mb-2">Plans</h3>
-<p>Bronze (1000) → 5%</p>
-<p>Silver (2000) → 10%</p>
-<p>Gold (3000) → 15%</p>
-<p>Platinum (4000) → 20%</p>
-<p>Diamond (5000) → 30%</p>
-</div>
-
-<div class="glass p-5">
-<h3 class="font-bold mb-2">Advanced Plans</h3>
-<p>Master → 4X Return</p>
-<p>Grandmaster → 10X Return</p>
-</div>
-
-<div class="glass p-5">
-<h3 class="font-bold mb-2">System Flow</h3>
-<p>Select Plan → Pay → Get ID → Dashboard → Earn</p>
-</div>
-
-<div class="glass p-5">
-<h3 class="font-bold text-red-400 mb-2">Important</h3>
-<p>Activate plan before earning</p>
-<p>Verify wallet carefully</p>
-<p>Crypto involves risk</p>
-</div>
-
-<button @click="logout()" class="w-full border border-red-400 text-red-400 py-2">
-Logout
-</button>
-
+<div x-show="section==='profile'">
+<p class="text-orange-500 font-semibold">Activate Your Plan</p>
+<button @click="logout()" class="border border-red-500 text-red-500 px-4 py-2 rounded w-full mt-3">Logout</button>
 </div>
 
 </main>
@@ -521,8 +255,8 @@ plans:{1000:5,2000:10,3000:15,4000:20,5000:30},
 
 navClass(s){
  return this.section===s
-  ? 'block px-4 py-2 bg-blue-500/20 text-blue-400'
-  : 'block px-4 py-2 text-gray-400 hover:text-white';
+  ? 'block px-4 py-2 rounded-lg bg-blue-100 text-blue-600 font-semibold'
+  : 'block px-4 py-2 rounded-lg hover:bg-gray-100';
 },
 
 goPayment(){
@@ -536,10 +270,12 @@ return (this.payAmount / this.rates[this.payCoin]).toFixed(6);
 
 submitTx(){
 if(!this.txHash){
-alert("Enter TX Hash");
+alert("Please enter TX Hash");
 return;
 }
-this.txs.push({amount:this.payAmount});
+
+this.txs.push({amount:this.payAmount,status:'pending'});
+this.txHash='';
 this.section='transactions';
 },
 
@@ -548,9 +284,11 @@ if(this.planName==='None'){
 alert('Activate plan first');
 return;
 }
+
 this.referrals++;
 let percent=this.plans[this.package]/100;
 let income=this.package*percent;
+
 this.refIncome+=income;
 this.earnings+=income;
 },
@@ -558,6 +296,7 @@ this.earnings+=income;
 withdraw(){
 if(this.withdrawAmt>this.earnings) return alert('Insufficient');
 this.earnings-=this.withdrawAmt;
+alert('Withdraw Requested');
 },
 
 logout(){ this.page='landing'; },
