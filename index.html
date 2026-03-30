@@ -104,7 +104,7 @@ Open Dashboard
 </button>
 
 <!-- ORIGINAL TOOL BUTTON -->
-<button @click="page='tools'"
+<button onclick="showPage('toolsPage')"
 class="w-full py-4 rounded-xl border border-white/20 text-white/80 hover:text-white hover:border-white transition">
 View Tools & Analytics
 </button>
@@ -360,7 +360,8 @@ class="w-full p-2 rounded-lg bg-black/40 text-white border border-white/10 focus
 <option value="5000">Diamond - 5000 USDT (30%)</option>
 </select>
 
-<select x-model="specialPlan" class="w-full p-2 rounded-lg">
+<select x-model="specialPlan" 
+    class="w-full p-2 rounded-lg bg-black/40 text-white border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none">
 <option value="0">No Upgrade</option>
 <option value="10000">Master - 10,000 USDT (4X)</option>
 <option value="20000">Grandmaster - 20,000 USDT (10X)</option>
@@ -382,7 +383,7 @@ Activate Plan
 
 <p>Total Plan Amount: <b x-text="payAmount"></b> USDT</p>
 
-<select x-model="payCoin" class="w-full p-2 rounded-lg">
+<select x-model="payCoin" class="w-full p-2 rounded-lg bg-black/40 text-white border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none">
 <option value="usdt">USDT</option>
 <option value="btc">BTC</option>
 <option value="eth">ETH</option>
@@ -401,7 +402,7 @@ class="mx-auto rounded-lg shadow">
 
 </div>
 
-<input x-model="txHash" placeholder="Enter TX Hash" class="w-full p-2 rounded-lg">
+<input x-model="txHash" placeholder="Enter TX Hash" class="w-full p-2 rounded-lg bg-black/40 text-white border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none placeholder-white/50">
 
 <button @click="submitTx()" class="btn-success text-white w-full py-2 rounded-lg">
 Submit Payment
@@ -452,7 +453,10 @@ Add Referral
 
 <!-- WITHDRAW -->
 <div x-show="section==='withdraw'" class="max-w-md space-y-3">
-<input x-model.number="withdrawAmt" placeholder="Amount" class="w-full p-2 rounded-lg">
+<input x-model.number="withdrawAmt" 
+placeholder="Amount" 
+class="w-full p-3 rounded-lg bg-black/40 text-white border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none placeholder-white/50">
+</div>
 <p>Balance: $<span x-text="earnings"></span></p>
 <button @click="withdraw()" class="btn-success text-white w-full py-2 rounded-lg">Withdraw</button>
 </div>
