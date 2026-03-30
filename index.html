@@ -104,7 +104,7 @@ Open Dashboard
 </button>
 
 <!-- ORIGINAL TOOL BUTTON -->
-<button onclick="showPage('toolsPage')"
+<button @click="page='tools'"
 class="w-full py-4 rounded-xl border border-white/20 text-white/80 hover:text-white hover:border-white transition">
 View Tools & Analytics
 </button>
@@ -232,12 +232,12 @@ Get Started
 </div>
 
 <!-- ================= TOOLS PAGE (FULL SAME) ================= -->
-<div id="toolsPage" class="page">
+<div x-show="page==='tools'" 
 
 <section class="text-center py-16">
 <h1 class="text-4xl font-semibold mb-4">Tools & Analytics</h1>
 
-<button onclick="showPage('homePage')" 
+<button @click="page='home'"
 class="mt-6 px-6 py-2 border border-white/20 rounded-lg">
 ← Back
 </button>
@@ -456,7 +456,6 @@ Add Referral
 <input x-model.number="withdrawAmt" 
 placeholder="Amount" 
 class="w-full p-3 rounded-lg bg-black/40 text-white border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none placeholder-white/50">
-</div>
 <p>Balance: $<span x-text="earnings"></span></p>
 <button @click="withdraw()" class="btn-success text-white w-full py-2 rounded-lg">Withdraw</button>
 </div>
