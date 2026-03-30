@@ -82,7 +82,7 @@ Open Dashboard
 </button>
 
 <!-- ORIGINAL TOOL BUTTON -->
-<button onclick="showPage('toolsPage')" 
+<button @click="page='tools'"
 class="w-full py-4 rounded-xl border border-white/20 text-white/80 hover:text-white hover:border-white transition">
 View Tools & Analytics
 </button>
@@ -494,6 +494,7 @@ Logout
 </div>
 
 <script>
+    
 function app(){
 return{
 
@@ -600,13 +601,7 @@ let total = i * m;
 document.getElementById("returnResult").innerText = "Return: " + total + " USDT";
 }
 
-function app(){
-return{
-page:'landing',
-init(){}
-}
-}
-</script>
+
 
 </body>
 </html>
