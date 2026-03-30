@@ -4,262 +4,301 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crypto Galian</title>
+
 <script src="https://cdn.tailwindcss.com"></script>
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body { font-family: 'Poppins', sans-serif; }
-.glass { backdrop-filter: blur(18px); background: rgba(255,255,255,0.75); box-shadow:0 10px 40px rgba(0,0,0,0.1); }
-.active-tab { border-bottom: 3px solid #2563eb; color:#2563eb; }
-.card { border-radius: 18px; }
+body { 
+  font-family: 'Inter', sans-serif; 
+  background: radial-gradient(circle at top, #0f172a, #020617);
+}
+
+/* Premium Glass */
+.glass {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  transition: all 0.3s ease;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37,99,235,0.4);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #16a34a, #166534);
+}
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(22,163,74,0.4);
+}
+
+/* Sidebar */
+.sidebar {
+  background: rgba(2, 6, 23, 0.9);
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Inputs */
+input, select {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #e5e7eb;
+}
+input::placeholder {
+  color: #9ca3af;
+}
+
+/* Text Colors */
+body, p, span, h1, h2, h3 {
+  color: #e5e7eb;
+}
 </style>
 </head>
 
-<body class="bg-gradient-to-br from-blue-50 to-gray-100 text-gray-800" x-data="app()">
+<body class="text-gray-200" x-data="app()" x-init="init()">
 
 <!-- LANDING -->
-<div x-show="page==='landing'" class="min-h-screen flex flex-col">
+<div x-show="page==='landing'" class="min-h-screen flex flex-col justify-center items-center text-center px-4">
+  <h1 class="text-5xl font-bold text-blue-500 mb-4">Crypto Galian</h1>
+  <p class="text-gray-400 mb-6">Smart Network | Referral & Package Earnings</p>
 
-<section class="flex-1 flex flex-col items-center justify-center text-center px-6">
-  <h1 class="text-5xl md:text-6xl font-extrabold text-blue-600 mb-4">🚀 Crypto Galian</h1>
-  <p class="text-gray-600 mb-6 max-w-xl text-lg">
-    Instantly sell Bitcoin, USDT, ETH, SOL & TRX and receive INR safely.
-  </p>
-
-  <div class="flex gap-3 flex-wrap justify-center mb-6">
-    <span class="glass px-4 py-2 rounded-full">⚡ Instant</span>
-    <span class="glass px-4 py-2 rounded-full">🔒 Secure</span>
-    <span class="glass px-4 py-2 rounded-full">💰 Best Rates</span>
-    <span class="glass px-4 py-2 rounded-full">📱 Easy UI</span>
-  </div>
-
-  <button @click="page='dashboard'" class="bg-blue-600 hover:bg-blue-700 transition text-white px-8 py-3 rounded-xl text-lg shadow-lg">
-    Start Selling
+  <button @click="page='dashboard'" class="btn-primary text-white px-8 py-3 rounded-xl">
+    Enter Dashboard
   </button>
-</section>
-
-<section class="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 pb-10 max-w-5xl mx-auto">
-  <div class="glass p-5 rounded-xl text-center">
-    <h3 class="font-bold text-lg mb-2">💱 Multi Crypto</h3>
-    <p class="text-sm text-gray-600">Support for BTC, USDT, ETH, SOL & TRX</p>
-  </div>
-
-  <div class="glass p-5 rounded-xl text-center">
-    <h3 class="font-bold text-lg mb-2">📊 Live Conversion</h3>
-    <p class="text-sm text-gray-600">Instant USD to INR calculation</p>
-  </div>
-
-  <div class="glass p-5 rounded-xl text-center">
-    <h3 class="font-bold text-lg mb-2">🔐 Safe Process</h3>
-    <p class="text-sm text-gray-600">Secure wallet & transaction flow</p>
-  </div>
-</section>
-
 </div>
 
 <!-- DASHBOARD -->
-<div x-show="page==='dashboard'" class="flex min-h-screen">
+<div x-show="page==='dashboard'" class="flex w-full min-h-screen">
 
-<aside class="bg-white md:w-64 w-full md:min-h-screen fixed md:static bottom-0 left-0 right-0 z-50 border-t md:border-r shadow-sm">
+<!-- SIDEBAR -->
+<aside class="hidden md:flex flex-col w-64 sidebar p-5 space-y-4">
+<h2 class="text-2xl font-bold text-blue-500 mb-6">Crypto Galian</h2>
 
-<div class="hidden md:block p-5 space-y-4">
-<h2 class="text-xl font-bold text-blue-600 mb-6">🚀 Crypto Galian</h2>
-<button @click="section='dashboard'" :class="tab('dashboard')">🏠 Dashboard</button>
-<button @click="section='sell'" :class="tab('sell')">💰 Sell</button>
-<button @click="section='transactions'" :class="tab('transactions')">📊 Transactions</button>
-<button @click="section='withdraw'" :class="tab('withdraw')">💸 Withdraw</button>
-<button @click="section='status'" :class="tab('status')">📄 Status</button>
-<button @click="section='profile'" :class="tab('profile')">👤 Profile</button>
-</div>
-
-<div x-data="{ active: 'dashboard' }"
-     class="fixed bottom-0 left-1/2 -translate-x-1/2 w-[95%] md:hidden z-50">
-  
-  <div class="relative flex items-center justify-between py-3 
-              bg-white/90 backdrop-blur-md 
-              shadow-md rounded-t-2xl border">
-
-    <!-- Sliding Bubble (100% responsive) -->
-<div 
-  class="absolute top-2 bottom-2 w-[20%] bg-blue-100 rounded-xl transition-all duration-300"
-  :class="{
-    'left-[2.5%]': active==='dashboard',
-    'left-[27.5%]': active==='sell',
-    'left-[52.5%]': active==='withdraw',
-    'left-[77.5%]': active==='profile'
-  }">
-</div>
-    <!-- Buttons -->
-    <button 
-      @click="active='dashboard'; section='dashboard'" 
-      class="relative z-10 w-[25%] text-lg text-center">
-      🏠
-    </button>
-
-    <button 
-      @click="active='sell'; section='sell'" 
-      class="relative z-10 w-[25%] text-lg text-center">
-      💰
-    </button>
-
-    <button 
-      @click="active='withdraw'; section='withdraw'" 
-      class="relative z-10 w-[25%] text-lg text-center">
-      💸
-    </button>
-
-    <button 
-      @click="active='profile'; section='profile'" 
-      class="relative z-10 w-[25%] text-lg text-center">
-      👤
-    </button>
-
-  </div>
-
-</div>
-
-  
-
+<button @click="section='dashboard'" :class="navClass('dashboard')">Dashboard</button>
+<button @click="section='join'" :class="navClass('join')">Join Plan</button>
+<button @click="section='transactions'" :class="navClass('transactions')">Transactions</button>
+<button @click="section='income'" :class="navClass('income')">Income</button>
+<button @click="section='withdraw'" :class="navClass('withdraw')">Withdraw</button>
+<button @click="section='profile'" :class="navClass('profile')">Profile</button>
 </aside>
 
-<main class="flex-1 p-4 pb-24 md:pb-4">
+<!-- MOBILE NAV -->
+<div x-data="{ active: 'dashboard' }"
+     class="fixed bottom-3 left-1/2 -translate-x-1/2 w-[92%] md:hidden z-50">
+  <div class="relative flex justify-between items-center px-2 py-3 bg-black/80 backdrop-blur-lg rounded-2xl shadow-lg">
 
-<div class="mb-4">
-<h2 class="text-2xl font-bold capitalize" x-text="section"></h2>
+    <div class="absolute top-2 bottom-2 w-[22%] bg-blue-600/20 rounded-xl transition-all duration-300"
+      :class="{
+        'left-[2%]': active==='dashboard',
+        'left-[26%]': active==='join',
+        'left-[50%]': active==='withdraw',
+        'left-[74%]': active==='profile'
+      }"></div>
+
+    <button @click="active='dashboard';section='dashboard'" class="relative z-10 w-1/4">🏠</button>
+    <button @click="active='join';section='join'" class="relative z-10 w-1/4">💼</button>
+    <button @click="active='withdraw';section='withdraw'" class="relative z-10 w-1/4">💸</button>
+    <button @click="active='profile';section='profile'" class="relative z-10 w-1/4">👤</button>
+  </div>
 </div>
+
+<!-- MAIN -->
+<main class="flex-1 w-full p-6 pb-24 md:pb-6">
+
+<h2 class="text-2xl font-bold mb-4 capitalize text-white" x-text="section"></h2>
 
 <!-- DASHBOARD -->
-<div x-show="section==='dashboard'" class="space-y-4">
-
-<div class="glass p-4 rounded-xl flex justify-between items-center">
-  <div>
-    <p class="text-sm text-gray-500">Welcome back 👋</p>
-    <p class="font-bold text-lg">Start selling your crypto instantly</p>
-  </div>
-  <button @click="section='sell'" class="bg-blue-600 text-white px-4 py-2 rounded-lg">
-    Sell Now
-  </button>
+<div x-show="section==='dashboard'" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<div class="glass p-5 text-center rounded-xl">
+<p>Total Earnings</p>
+<p class="text-2xl text-green-400 font-bold" x-text="earnings"></p>
 </div>
 
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-<div class="glass card p-5 text-center">
-<p>USD Balance</p>
-<p class="text-2xl text-blue-600 font-bold" x-text="usd"></p>
+<div class="glass p-5 text-center rounded-xl">
+<p>Referrals</p>
+<p class="text-2xl text-blue-400 font-bold" x-text="referrals"></p>
 </div>
-<div class="glass card p-5 text-center">
-<p>INR Balance</p>
-<p class="text-2xl text-green-600 font-bold" x-text="inr"></p>
+
+<div class="glass p-5 text-center rounded-xl">
+<p>Active Plan</p>
+<p class="text-2xl text-purple-400 font-bold" x-text="planName"></p>
 </div>
-<div class="glass card p-5 text-center">
-<p>Pending</p>
-<p class="text-2xl text-orange-500 font-bold" x-text="pending"></p>
+
+<div class="glass p-5 text-center rounded-xl">
+<p>Extra Earnings</p>
+<p class="text-2xl text-green-400 font-bold" x-text="extraIncome"></p>
 </div>
 </div>
 
-<div class="glass p-4 rounded-xl">
-  <h3 class="font-bold mb-2">Recent Activity</h3>
-  <template x-if="txs.length === 0">
-    <p class="text-sm text-gray-500">No transactions yet</p>
-  </template>
-  <template x-for="t in txs.slice(-3)">
-  <div class="flex justify-between text-sm border-b py-1">
-    <span>$<span x-text="t.amount"></span> (<span x-text="t.coin"></span>)</span>
-    <span :class="t.status==='approved' ? 'text-green-500' : 'text-orange-500'" x-text="t.status"></span>
-  </div>
-</template>
-</div>
-
-</div>
-
-<!-- SELL -->
-<div x-show="section==='sell'" class="max-w-md space-y-3">
-
-<select x-model="coin" class="w-full p-2 border rounded-lg">
-<option value="usdt">USDT (TRC20)</option>
-<option value="btc">Bitcoin (BTC)</option>
-<option value="eth">Ethereum (ETH)</option>
-<option value="sol">Solana (SOL)</option>
-<option value="trx">Tron (TRX)</option>
+<!-- JOIN -->
+<div x-show="section==='join'" class="max-w-md space-y-3">
+<select x-model="package" class="w-full p-2 rounded-lg">
+<option value="1000">Bronze - 1000 USDT (5%)</option>
+<option value="2000">Silver - 2000 USDT (10%)</option>
+<option value="3000">Gold - 3000 USDT (15%)</option>
+<option value="4000">Platinum - 4000 USDT (20%)</option>
+<option value="5000">Diamond - 5000 USDT (30%)</option>
 </select>
 
-<p class="font-bold text-green-600" x-text="coin.toUpperCase()"></p>
+<select x-model="specialPlan" class="w-full p-2 rounded-lg">
+<option value="0">No Upgrade</option>
+<option value="10000">Master - 10,000 USDT (4X)</option>
+<option value="20000">Grandmaster - 20,000 USDT (10X)</option>
+</select>
 
-<input x-model.number="amount" type="number" placeholder="Minimum $500" class="w-full p-2 border rounded-lg">
-
-<div class="glass p-3 rounded-lg">
-<p>USD: <span x-text="amount"></span></p>
-<p>INR: <span x-text="amount * rates[coin]"></span></p>
+<div class="glass p-3 text-center text-yellow-400 font-semibold">
+Your plan is not activated
 </div>
 
-<div class="glass p-3 rounded-lg text-center">
-<p>Deposit Address</p>
-<p class="text-blue-600 break-all" x-text="wallets[coin]"></p>
-<img 
-:src="'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&data=' + wallets[coin]" 
-class="mx-auto mt-2">
+<button @click="goPayment()" class="btn-primary text-white w-full py-2 rounded-lg">
+Activate Plan
+</button>
 </div>
 
-<input placeholder="TX Hash" class="w-full p-2 border rounded-lg">
-<button @click="submit()" class="bg-blue-600 text-white w-full py-2 rounded-lg">Submit</button>
+<!-- PAYMENT -->
+<div x-show="section==='payment'" class="max-w-md space-y-4">
+
+<button @click="section='join'" class="text-blue-400 font-semibold">Back</button>
+
+<p>Total Plan Amount: <b x-text="payAmount"></b> USDT</p>
+
+<select x-model="payCoin" class="w-full p-2 rounded-lg">
+<option value="usdt">USDT</option>
+<option value="btc">BTC</option>
+<option value="eth">ETH</option>
+<option value="trx">TRX</option>
+</select>
+
+<div class="glass p-4 text-center space-y-3 rounded-xl">
+
+<img :src="'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+wallets[payCoin]" 
+class="mx-auto rounded-lg shadow">
+
+<p class="text-lg font-bold" x-text="cryptoAmount()"></p>
+<p class="uppercase text-gray-400" x-text="payCoin"></p>
+
+<p class="text-blue-400 break-all text-sm" x-text="wallets[payCoin]"></p>
+
+</div>
+
+<input x-model="txHash" placeholder="Enter TX Hash" class="w-full p-2 rounded-lg">
+
+<button @click="submitTx()" class="btn-success text-white w-full py-2 rounded-lg">
+Submit Payment
+</button>
 
 </div>
 
 <!-- TRANSACTIONS -->
 <div x-show="section==='transactions'" class="space-y-2">
-<template x-for="(t,i) in txs">
-<div class="glass p-3 rounded-lg flex justify-between items-center">
-  <span>$<span x-text="t.amount"></span> (<span x-text="t.coin"></span>)</span>
-  <div class="flex gap-2 items-center">
-    <span :class="t.status==='approved' ? 'text-green-500' : 'text-orange-500'" x-text="t.status"></span>
-    <button x-show="t.status==='pending'" @click="approveTx(i)" class="text-xs bg-green-600 text-white px-2 py-1 rounded">
-      Approve
-    </button>
-  </div>
+<template x-if="txs.length===0">
+<p>No transactions</p>
+</template>
+
+<template x-for="t in txs">
+<div class="glass p-3 rounded-lg flex justify-between">
+<span>$<span x-text="t.amount"></span></span>
+<span class="text-yellow-400">pending</span>
 </div>
 </template>
+</div>
+
+<!-- INCOME -->
+<div x-show="section==='income'" class="grid grid-cols-2 gap-4">
+<div class="glass p-4 text-center">
+<p>Referral Income</p>
+<p>$<span x-text="refIncome"></span></p>
+</div>
+
+<div class="glass p-4 text-center">
+<p>Package Income</p>
+<p>$<span x-text="pkgIncome"></span></p>
+</div>
+
+<div class="glass p-4 text-center">
+<p>Extra</p>
+<p>$<span x-text="extraIncome"></span></p>
+</div>
+
+<div class="glass p-4 text-center">
+<p>Total</p>
+<p>$<span x-text="earnings"></span></p>
+</div>
+
+<button @click="addReferral()" class="col-span-2 btn-success text-white py-2 rounded">
+Add Referral
+</button>
 </div>
 
 <!-- WITHDRAW -->
-<div x-show="section==='withdraw'" class="space-y-3 max-w-md">
-
-<select x-model="withdrawType" class="w-full p-2 border rounded-lg">
-  <option value="inr">INR</option>
-  <option value="usd">USD</option>
-</select>
-
-<input x-model.number="withdrawAmt" :placeholder="withdrawType==='inr' ? 'Minimum ₹'+(500*83) : 'Minimum $500'" class="w-full p-2 border rounded-lg">
-
-<p class="text-sm text-gray-500">
-  Balance: 
-  <span x-text="withdrawType==='inr' ? '₹'+inr : '$'+usd"></span>
-</p>
-
-<button @click="withdraw()" class="bg-green-600 text-white w-full py-2 rounded-lg">
-  Withdraw
-</button>
-
-</div>
-
-<!-- STATUS -->
-<div x-show="section==='status'" class="space-y-2">
-<template x-for="w in withdrawals">
-<div class="glass p-3 rounded-lg flex justify-between">
-<span>₹<span x-text="w"></span></span>
-<span class="text-orange-500">Pending</span>
-</div>
-</template>
+<div x-show="section==='withdraw'" class="max-w-md space-y-3">
+<input x-model.number="withdrawAmt" placeholder="Amount" class="w-full p-2 rounded-lg">
+<p>Balance: $<span x-text="earnings"></span></p>
+<button @click="withdraw()" class="btn-success text-white w-full py-2 rounded-lg">Withdraw</button>
 </div>
 
 <!-- PROFILE -->
-<div x-show="section==='profile'" class="glass p-4 rounded-lg space-y-3">
-<h3 class="font-bold">Profile</h3>
-<p>Crypto Galian User</p>
+<div x-show="section==='profile'" class="space-y-6 max-w-5xl">
 
-<button 
-  @click="logout()" 
-  class="px-4 py-2 rounded-full border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition w-full">
-  Logout
+<div class="glass p-6 rounded-xl flex justify-between">
+<div>
+<h2 class="text-2xl font-bold">Account Overview</h2>
+<p class="text-sm text-gray-400">Detailed account insights</p>
+</div>
+<div>
+<span class="px-3 py-1 rounded-full text-sm"
+:class="planName==='None'?'bg-red-500/20 text-red-400':'bg-green-500/20 text-green-400'">
+<span x-text="planName==='None'?'Inactive':'Active'"></span>
+</span>
+</div>
+</div>
+
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+<div class="glass p-4"><p>Plan</p><b x-text="planName"></b></div>
+<div class="glass p-4"><p>Referrals</p><b x-text="referrals"></b></div>
+<div class="glass p-4"><p>Earnings</p><b>$<span x-text="earnings"></span></b></div>
+<div class="glass p-4"><p>Extra</p><b>$<span x-text="extraIncome"></span></b></div>
+</div>
+
+<div class="glass p-5">
+<h3 class="font-bold mb-2">Plans</h3>
+<p>Bronze (1000) → 5%</p>
+<p>Silver (2000) → 10%</p>
+<p>Gold (3000) → 15%</p>
+<p>Platinum (4000) → 20%</p>
+<p>Diamond (5000) → 30%</p>
+</div>
+
+<div class="glass p-5">
+<h3 class="font-bold mb-2">Advanced Plans</h3>
+<p>Master → 4X Return</p>
+<p>Grandmaster → 10X Return</p>
+</div>
+
+<div class="glass p-5">
+<h3 class="font-bold mb-2">System Flow</h3>
+<p>Select Plan → Pay → Get ID → Dashboard → Earn</p>
+</div>
+
+<div class="glass p-5">
+<h3 class="font-bold text-red-400 mb-2">Important</h3>
+<p>Activate plan before earning</p>
+<p>Verify wallet carefully</p>
+<p>Crypto involves risk</p>
+</div>
+
+<button @click="logout()" class="w-full border border-red-400 text-red-400 py-2">
+Logout
 </button>
 
 </div>
@@ -267,107 +306,88 @@ class="mx-auto mt-2">
 </main>
 </div>
 
-
 <script>
 function app(){
- return {
- page:'landing', section:'dashboard',
- usd:0, inr:0, pending:0,
- amount:0, withdrawAmt:0,
- txs:[], withdrawals:[],
+return{
 
- coin:'usdt',
- withdrawType:'inr',
+page:'landing',
+section:'dashboard',
 
- wallets:{
-  usdt:"TQ6zXEEuZrFcSHWdhJt5a1Hi4p9qoBibTd",
-  btc:"bc1pjxpdrsvhu6whk5hjtn7szm7ppkshfhtu8k8q57tv98mg8aj0haus0ml3cu",
-  eth:"0x9b0aABC8d24a068F3797e44aE47EdA474cADA346",
-  sol:"9nrbnqURHK75YFALxG23Kfrv4yEJgHySwzKCLdCmCCEs",
-  trx:"TQ6zXEEuZrFcSHWdhJt5a1Hi4p9qoBibTd"
- },
+package:1000,
+specialPlan:0,
+planName:'None',
 
- scannedAddress:'',
+earnings:0,
+referrals:0,
+refIncome:0,
+pkgIncome:0,
+extraIncome:0,
 
- rates:{
-  usdt:83,
-  btc:0,
-  eth:0,
-  sol:0,
-  trx:0
- },
+withdrawAmt:0,
 
- tab(s){ return this.section===s?'active-tab block':'block'; },
+payCoin:'usdt',
+payAmount:0,
+txHash:'',
 
- submit(){
-  if(this.amount<500) return alert('Minimum $500');
-  this.pending++;
-  this.txs.push({amount:this.amount, coin:this.coin.toUpperCase(), status:'pending'});
+txs:[],
+
+rates:{usdt:1, btc:65000, eth:3500, trx:0.12},
+
+wallets:{
+usdt:"TQ6zXEEuZrFcSHWdhJt5a1Hi4p9qoBibTd",
+btc:"bc1pjxpdrsvhu6whk5hjtn7szm7ppkshfhtu8k8q57tv98mg8aj0haus0ml3cu",
+eth:"0x9b0aABC8d24a068F3797e44aE47EdA474cADA346",
+trx:"TQ6zXEEuZrFcSHWdhJt5a1Hi4p9qoBibTd"
 },
 
-approveTx(i){
-  const tx = this.txs[i];
-  if(!tx || tx.status==='approved') return;
+plans:{1000:5,2000:10,3000:15,4000:20,5000:30},
 
-  this.usd += tx.amount;
-  this.inr += tx.amount * this.rates[tx.coin.toLowerCase()];
-  tx.status = 'approved';
-  this.pending--;
+navClass(s){
+ return this.section===s
+  ? 'block px-4 py-2 bg-blue-500/20 text-blue-400'
+  : 'block px-4 py-2 text-gray-400 hover:text-white';
+},
+
+goPayment(){
+this.payAmount = parseInt(this.package)+parseInt(this.specialPlan);
+this.section='payment';
+},
+
+cryptoAmount(){
+return (this.payAmount / this.rates[this.payCoin]).toFixed(6);
+},
+
+submitTx(){
+if(!this.txHash){
+alert("Enter TX Hash");
+return;
+}
+this.txs.push({amount:this.payAmount});
+this.section='transactions';
+},
+
+addReferral(){
+if(this.planName==='None'){
+alert('Activate plan first');
+return;
+}
+this.referrals++;
+let percent=this.plans[this.package]/100;
+let income=this.package*percent;
+this.refIncome+=income;
+this.earnings+=income;
 },
 
 withdraw(){
-  const minUSD = 500;
-  const minINR = 500 * 83;
-
-  if(this.withdrawType==='inr'){
-    if(this.inr<=0) return alert('No balance to withdraw');
-    if(this.withdrawAmt < minINR) return alert('Minimum withdrawal is ₹' + minINR);
-    if(this.withdrawAmt > this.inr) return alert('Insufficient balance');
-
-    this.inr -= this.withdrawAmt;
-    this.withdrawals.push(this.withdrawAmt);
-  } else {
-    if(this.usd<=0) return alert('No balance to withdraw');
-    if(this.withdrawAmt < minUSD) return alert('Minimum withdrawal is $500');
-    if(this.withdrawAmt > this.usd) return alert('Insufficient balance');
-
-    this.usd -= this.withdrawAmt;
-    this.withdrawals.push(this.withdrawAmt);
-  }
+if(this.withdrawAmt>this.earnings) return alert('Insufficient');
+this.earnings-=this.withdrawAmt;
 },
 
-scanQR(e){
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    alert('QR scan feature placeholder (connect real scanner API)');
-  };
-  reader.readAsDataURL(file);
-},
+logout(){ this.page='landing'; },
 
-async fetchPrices(){
-  try{
-    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,tron,tether&vs_currencies=inr');
-    const data = await res.json();
+init(){}
 
-    this.rates.btc = data.bitcoin.inr;
-    this.rates.eth = data.ethereum.inr;
-    this.rates.sol = data.solana.inr;
-    this.rates.trx = data.tron.inr;
-    this.rates.usdt = data.tether.inr;
-  }catch(e){
-    console.log('Price fetch error', e);
-  }
-},
-
-init(){
-  this.fetchPrices();
-  setInterval(()=>this.fetchPrices(), 10000);
-},
-
-logout(){ this.page='landing'; }
- }
+}
 }
 </script>
 
