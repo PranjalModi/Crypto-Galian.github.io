@@ -68,14 +68,136 @@ body, p, span, h1, h2, h3 {
 <body class="text-gray-200" x-data="app()" x-init="init()">
 
 <!-- LANDING -->
-<div x-show="page==='landing'" class="min-h-screen flex flex-col justify-center items-center text-center px-4">
-  <h1 class="text-5xl font-bold text-blue-500 mb-4">Crypto Galian</h1>
-  <p class="text-gray-400 mb-6">Smart Network | Referral & Package Earnings</p>
+<header class="flex items-center justify-between px-6 py-4 border-b border-white/10">
+    <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600"></div>
+        <h1 class="text-lg font-semibold tracking-wide">Crypto Galian</h1>
+    </div>
+</header>
 
-  <button @click="page='dashboard'" class="btn-primary text-white px-8 py-3 rounded-xl">
-    Enter Dashboard
-  </button>
+<div x-show="page==='landing'">
+
+<div id="homePage" class="page active">
+
+<!-- HERO -->
+<section class="min-h-screen flex flex-col items-center justify-center text-center px-6">
+    <div class="glass px-6 py-2 rounded-full text-sm mb-6 tracking-wide">
+        Advanced Crypto Intelligence Platform
+    </div>
+
+    <h1 class="text-4xl md:text-6xl font-semibold leading-tight max-w-4xl">
+        Next-Generation Crypto
+        <br>
+        <span class="gradient-text">Analytics & Market Intelligence</span>
+    </h1>
+
+    <p class="text-white/60 mt-6 max-w-xl">
+        Track markets, analyze trends, and manage your crypto portfolio 
+        with a powerful and intuitive dashboard built for modern traders.
+    </p>
+
+    <div class="mt-10 w-full max-w-sm space-y-4">
+        <button @click="page='dashboard'" class="w-full py-4 rounded-xl glow-btn text-lg">
+            Open Dashboard
+        </button>
+
+        <button onclick="showPage('toolsPage')" 
+            class="w-full py-4 rounded-xl border border-white/20 text-white/80 hover:text-white hover:border-white transition">
+            View Tools & Analytics
+        </button>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="py-24 px-6 text-center">
+    <h2 class="text-4xl md:text-5xl font-semibold mb-6">
+        Transforming Crypto Intelligence
+    </h2>
+
+    <p class="text-white/60 max-w-3xl mx-auto mb-16">
+        Crypto Galian provides advanced tools and insights to simplify crypto investing,
+        helping users make smarter and faster decisions in dynamic markets.
+    </p>
+
+    <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+
+        <div class="glass p-8 rounded-2xl">
+            <h3 class="text-xl font-semibold mb-3">Advanced Analytics</h3>
+            <p class="text-white/60">Real-time market data and trend analysis.</p>
+        </div>
+
+        <div class="glass p-8 rounded-2xl">
+            <h3 class="text-xl font-semibold mb-3">Portfolio Tracking</h3>
+            <p class="text-white/60">Track your assets and performance.</p>
+        </div>
+
+        <div class="glass p-8 rounded-2xl">
+            <h3 class="text-xl font-semibold mb-3">Global Insights</h3>
+            <p class="text-white/60">Stay connected to global crypto markets.</p>
+        </div>
+
+    </div>
+</section>
+
+<!-- NETWORK -->
+<section class="py-24 px-6 text-center">
+    <h2 class="text-4xl md:text-5xl font-semibold mb-6">
+        Intelligent Network & Growth System
+    </h2>
+</section>
+
+<!-- CTA -->
+<section class="py-24 px-6 text-center">
+    <div class="glass max-w-4xl mx-auto p-12 rounded-3xl">
+        <h2 class="text-3xl md:text-4xl font-semibold mb-6">
+            Start Your Crypto Journey Today
+        </h2>
+
+        <button @click="page='dashboard'" class="px-10 py-4 rounded-xl glow-btn text-lg">
+            Get Started
+        </button>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-white/10 py-10 px-6 text-center text-white/50">
+    <h3 class="text-lg text-white mb-2">Crypto Galian</h3>
+</footer>
+
 </div>
+
+<!-- TOOLS PAGE -->
+<div id="toolsPage" class="page">
+
+<section class="text-center py-16">
+    <h1 class="text-4xl font-semibold mb-4">Tools & Analytics</h1>
+    <button onclick="showPage('homePage')" class="mt-6 px-6 py-2 border rounded-lg">
+        ← Back
+    </button>
+</section>
+
+<section class="px-6 pb-20 max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
+
+<div class="glass p-8 rounded-2xl">
+    <h3 class="text-xl font-semibold mb-6">Referral Earnings</h3>
+    <input id="refs" type="number" placeholder="Referrals" class="w-full mb-4 p-3 rounded">
+    <button onclick="calcReferral()" class="w-full py-3 glow-btn rounded-lg">Calculate</button>
+    <p id="refResult" class="mt-4"></p>
+</div>
+
+<div class="glass p-8 rounded-2xl">
+    <h3 class="text-xl font-semibold mb-6">Package Return</h3>
+    <input id="invest" type="number" placeholder="Investment" class="w-full mb-4 p-3 rounded">
+    <button onclick="calcReturn()" class="w-full py-3 glow-btn rounded-lg">Calculate</button>
+    <p id="returnResult" class="mt-4"></p>
+</div>
+
+</section>
+
+</div>
+
+</div>
+
 
 <!-- DASHBOARD -->
 <div x-show="page==='dashboard'" class="flex w-full min-h-screen">
