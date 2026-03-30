@@ -161,33 +161,67 @@ body, p, span, h1, h2, h3 {
 
 <!-- FOOTER -->
 <footer class="border-t border-white/10 py-10 px-6 text-center text-white/50">
-    <h3 class="text-lg text-white mb-2">Crypto Galian</h3>
-</footer>
 
-</div>
+    <h3 class="text-lg text-white mb-2">Crypto Galian</h3>
+    <p class="mb-4">Advanced Crypto Intelligence Platform</p>
+
+    <div class="flex justify-center gap-6 text-sm">
+        <a href="#" onclick="showPage('homePage')" class="hover:text-white">Home</a>
+        <a href="#" onclick="openDashboard()" class="hover:text-white">Dashboard</a>
+        <a href="#" onclick="showPage('toolsPage')" class="hover:text-white">Tools</a>
+        <a href="#" onclick="scrollToBottom()" class="hover:text-white">Contact</a>
+    </div>
+
+    <p class="mt-6 text-xs text-white/40">
+        © 2026 Crypto Galian. All rights reserved.
+    </p>
+
+</footer>
 
 <!-- TOOLS PAGE -->
 <div id="toolsPage" class="page">
 
 <section class="text-center py-16">
     <h1 class="text-4xl font-semibold mb-4">Tools & Analytics</h1>
-    <button onclick="showPage('homePage')" class="mt-6 px-6 py-2 border rounded-lg">
+
+    <button onclick="showPage('homePage')" 
+        class="mt-6 px-6 py-2 border border-white/20 rounded-lg">
         ← Back
     </button>
 </section>
 
 <section class="px-6 pb-20 max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
 
+<!-- REFERRAL -->
 <div class="glass p-8 rounded-2xl">
     <h3 class="text-xl font-semibold mb-6">Referral Earnings</h3>
-    <input id="refs" type="number" placeholder="Referrals" class="w-full mb-4 p-3 rounded">
+
+    <select id="package" class="w-full mb-4 p-3 rounded bg-black/30">
+        <option value="5">Bronze (5%)</option>
+        <option value="10">Silver (10%)</option>
+        <option value="15">Gold (15%)</option>
+        <option value="20">Platinum (20%)</option>
+        <option value="30">Diamond (30%)</option>
+    </select>
+
+    <input id="refs" type="number" placeholder="Referrals" class="w-full mb-4 p-3 rounded bg-black/30">
+    <input id="price" type="number" placeholder="Package Price" class="w-full mb-4 p-3 rounded bg-black/30">
+
     <button onclick="calcReferral()" class="w-full py-3 glow-btn rounded-lg">Calculate</button>
     <p id="refResult" class="mt-4"></p>
 </div>
 
+<!-- RETURN -->
 <div class="glass p-8 rounded-2xl">
     <h3 class="text-xl font-semibold mb-6">Package Return</h3>
-    <input id="invest" type="number" placeholder="Investment" class="w-full mb-4 p-3 rounded">
+
+    <select id="role" class="w-full mb-4 p-3 rounded bg-black/30">
+        <option value="4">Master (4X)</option>
+        <option value="10">Grandmaster (10X)</option>
+    </select>
+
+    <input id="invest" type="number" placeholder="Investment" class="w-full mb-4 p-3 rounded bg-black/30">
+
     <button onclick="calcReturn()" class="w-full py-3 glow-btn rounded-lg">Calculate</button>
     <p id="returnResult" class="mt-4"></p>
 </div>
@@ -196,6 +230,36 @@ body, p, span, h1, h2, h3 {
 
 </div>
 
+<script>
+function showPage(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+}
+
+function calcReferral(){
+    let p = document.getElementById("package").value;
+    let r = document.getElementById("refs").value;
+    let price = document.getElementById("price").value;
+    let total = (price * p / 100) * r;
+    document.getElementById("refResult").innerText = "Earnings: " + total + " USDT";
+}
+
+function calcReturn(){
+    let m = document.getElementById("role").value;
+    let i = document.getElementById("invest").value;
+    let total = i * m;
+    document.getElementById("returnResult").innerText = "Return: " + total + " USDT";
+}
+
+function openDashboard(){
+    alert("Dashboard coming soon 🚀");
+}
+
+function scrollToBottom(){
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+}
+</script>
 </div>
 
 
