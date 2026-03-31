@@ -257,52 +257,59 @@ with powerful tools and intelligent insights.
 <h1 class="text-4xl font-semibold mb-4">Tools & Analytics</h1>
 
 <button onclick="showPage('homePage')" 
-class="mt-6 px-6 py-2 border border-white/20 rounded-lg">
+class="mt-6 px-6 py-2 border border-white/20 rounded-lg hover:border-white">
 ← Back
 </button>
 </section>
 
 <section class="px-6 pb-20 max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
 
+<!-- NORMAL PLAN -->
 <div class="glass p-8 rounded-2xl">
-<h3 class="text-xl font-semibold mb-6">Referral Earnings</h3>
+<h3 class="text-xl font-semibold mb-6">Plan Earnings Calculator</h3>
 
-<select id="package" class="w-full mb-4 p-3 rounded bg-black/30">
-<option value="5">Bronze (5%)</option>
-<option value="10">Silver (10%)</option>
-<option value="15">Gold (15%)</option>
-<option value="20">Platinum (20%)</option>
-<option value="30">Diamond (30%)</option>
+<select id="planSelect" class="w-full mb-4">
+<option value="1000|5|2">Bronze (1000 USDT)</option>
+<option value="2000|10|2">Silver (2000 USDT)</option>
+<option value="3000|15|2">Gold (3000 USDT)</option>
+<option value="4000|20|2">Platinum (4000 USDT)</option>
+<option value="5000|30|2">Diamond (5000 USDT)</option>
 </select>
 
-<input id="refs" type="number" placeholder="Referrals" class="w-full mb-4 p-3 rounded bg-black/30">
-<input id="price" type="number" placeholder="Package Price" class="w-full mb-4 p-3 rounded bg-black/30">
+<input id="refCount" type="number" placeholder="Number of Referrals" class="w-full mb-4">
+<input id="months" type="number" placeholder="Months (ROI)" class="w-full mb-4">
 
-<button onclick="calcReferral()" class="w-full py-3 glow-btn rounded-lg">Calculate</button>
+<button onclick="calcFullEarnings()" class="w-full py-3 glow-btn rounded-lg">
+Calculate Earnings
+</button>
 
-<p id="refResult" class="mt-4"></p>
+<p id="planResult" class="mt-4 text-sm"></p>
 </div>
 
+<!-- ADVANCED PLAN -->
 <div class="glass p-8 rounded-2xl">
-<h3 class="text-xl font-semibold mb-6">Package Return</h3>
+<h3 class="text-xl font-semibold mb-6">Advanced Plan Calculator</h3>
 
-<select id="role" class="w-full mb-4 p-3 rounded bg-black/30">
-<option value="4">Master (4X)</option>
-<option value="10">Grandmaster (10X)</option>
+<select id="advPlan" class="w-full mb-4">
+<option value="10000|4|2.5|35|1000">Master (10000 USDT)</option>
+<option value="20000|10|3|45|1500">Grandmaster (20000 USDT)</option>
 </select>
 
-<input id="invest" type="number" placeholder="Investment" class="w-full mb-4 p-3 rounded bg-black/30">
+<input id="advRefs" type="number" placeholder="Number of Referrals" class="w-full mb-4">
+<input id="advMonths" type="number" placeholder="Months (ROI)" class="w-full mb-4">
 
-<button onclick="calcReturn()" class="w-full py-3 glow-btn rounded-lg">Calculate</button>
+<button onclick="calcAdvanced()" class="w-full py-3 glow-btn rounded-lg">
+Calculate Advanced Earnings
+</button>
 
-<p id="returnResult" class="mt-4"></p>
+<p id="advResult" class="mt-4 text-sm"></p>
 </div>
 
 </section>
-
 </div>
 
 </div>
+
 
 <!-- ================= YOUR FULL DASHBOARD ================= -->
 <!-- DASHBOARD -->
@@ -658,27 +665,81 @@ init(){}
 
 
 <script>
+// ✅ FINAL NORMAL PLAN LOGIC
+function calcFullEarnings(){
+let d = document.getElementById("planSelect").value.split("|");
+
+let price = +d[0];
+let refP = +d[1];
+let roiP = +d[2];
+
+let refs = +document.getElementById("refCount").value || 0;
+let months = +document.getElementById("months").value || 0;
+
+// ALWAYS
+let refIncome = price * refP/100 * refs;
+
+// AFTER 5 REFERRALS
+let roiIncome = refs >= 5 ? (price * roiP/100 * months) : 0;
+
+let total = refIncome + roiIncome;
+
+let status = refs >= 5 
+    ? "✅ Full Earnings Active" 
+    : "⚠️ ROI locked (need 5 referrals)";
+
+document.getElementById("planResult").innerHTML =
+`Status: ${status}<br>
+Referral Income: ${refIncome.toFixed(2)} USDT<br>
+ROI Income: ${roiIncome.toFixed(2)} USDT<br>
+Total Earnings: <b>${total.toFixed(2)} USDT</b>`;
+}
+
+// ✅ FINAL ADVANCED PLAN LOGIC
+function calcAdvanced(){
+let d = document.getElementById("advPlan").value.split("|");
+
+let price = +d[0];
+let mult = +d[1];
+let roiP = +d[2];
+let refP = +d[3];
+let bonus10 = +d[4];
+
+let refs = +document.getElementById("advRefs").value || 0;
+let months = +document.getElementById("advMonths").value || 0;
+
+// ALWAYS
+let refIncome = price * refP/100 * refs;
+
+// AFTER 5 REFERRALS
+let roiIncome = refs >= 5 ? (price * roiP/100 * months) : 0;
+let bonus = refs >= 5 ? Math.floor(refs/10) * bonus10 : 0;
+
+let total = refIncome + roiIncome + bonus;
+
+// CAP
+let max = price * mult;
+if(total > max) total = max;
+
+let status = refs >= 5 
+    ? "✅ Full Earnings Active" 
+    : "⚠️ ROI & Bonus locked (need 5 referrals)";
+
+document.getElementById("advResult").innerHTML =
+`Status: ${status}<br>
+Referral Income: ${refIncome.toFixed(2)} USDT<br>
+ROI Income: ${roiIncome.toFixed(2)} USDT<br>
+Bonus Income: ${bonus.toFixed(2)} USDT<br>
+Max Cap: ${max} USDT<br>
+Total Earnings: <b>${total.toFixed(2)} USDT</b>`;
+}
+
 function showPage(id){
 document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
 document.getElementById(id).classList.add('active');
 }
-
-function calcReferral(){
-let p = document.getElementById("package").value;
-let r = document.getElementById("refs").value;
-let price = document.getElementById("price").value;
-let total = (price * p / 100) * r;
-document.getElementById("refResult").innerText = "Earnings: " + total + " USDT";
-}
-
-function calcReturn(){
-let m = document.getElementById("role").value;
-let i = document.getElementById("invest").value;
-let total = i * m;
-document.getElementById("returnResult").innerText = "Return: " + total + " USDT";
-}
-
 </script>
+
 
 </body>
 </html>
