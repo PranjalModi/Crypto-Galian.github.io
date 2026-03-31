@@ -231,7 +231,8 @@ Join Crypto Galian and take control of your crypto investments
 with powerful tools and intelligent insights.
 </p>
 
-<button class="px-10 py-4 rounded-xl glow-btn text-lg">
+<button @click="page='dashboard'; section='profile'" 
+class="px-10 py-4 rounded-xl glow-btn text-lg">
 Get Started
 </button>
 
@@ -246,10 +247,25 @@ Get Started
 <p class="mb-4">Advanced Crypto Intelligence Platform</p>
 
 <div class="flex justify-center gap-6 text-sm">
-<a href="#" class="hover:text-white">Home</a>
-<a href="#" class="hover:text-white">Dashboard</a>
-<a href="#" class="hover:text-white">Tools</a>
-<a href="#" class="hover:text-white">Contact</a>
+
+<a href="#" 
+@click.prevent="page='landing'" 
+class="hover:text-white">
+Home
+</a>
+
+<a href="#" 
+@click.prevent="page='dashboard'; section='dashboard'" 
+class="hover:text-white">
+Dashboard
+</a>
+
+<a href="#" 
+@click.prevent="showPage('toolsPage')" 
+class="hover:text-white">
+Tools
+</a>
+
 </div>
 
 <p class="mt-6 text-xs text-white/40">
