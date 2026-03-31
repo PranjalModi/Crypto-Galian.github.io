@@ -100,13 +100,7 @@ with a powerful and intuitive dashboard built for modern traders.
 
 <!-- CONNECTED DASHBOARD BUTTON -->
 <button @click="page='dashboard'" class="w-full py-4 rounded-xl glow-btn font-medium text-lg">
-Open Dashboard
-</button>
-
-<!-- ORIGINAL TOOL BUTTON -->
-<button @click="page='tools'"
-class="w-full py-4 rounded-xl border border-white/20 text-white/80 hover:text-white hover:border-white transition">
-View Tools & Analytics
+Start Stacking
 </button>
 
 </div>
@@ -219,7 +213,6 @@ Get Started
 <div class="flex justify-center gap-6 text-sm">
 <a href="#" class="hover:text-white">Home</a>
 <a href="#" class="hover:text-white">Dashboard</a>
-<a href="#" class="hover:text-white">Tools</a>
 <a href="#" class="hover:text-white">Contact</a>
 </div>
 
@@ -231,59 +224,7 @@ Get Started
 
 </div>
 
-<!-- ================= TOOLS PAGE (FULL SAME) ================= -->
-<div x-show="page==='tools'" x-cloak>
 
-<section class="text-center py-16">
-<h1 class="text-4xl font-semibold mb-4">Tools & Analytics</h1>
-
-<button @click="page='landing'" 
-class="mt-6 px-6 py-2 border border-white/20 rounded-lg">
-← Back
-</button>
-</section>
-
-<section class="px-6 pb-20 max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
-
-<div class="glass p-8 rounded-2xl">
-<h3 class="text-xl font-semibold mb-6">Referral Earnings</h3>
-
-<select id="package" class="w-full mb-4 p-3 rounded bg-black/30">
-<option value="5">Bronze (5%)</option>
-<option value="10">Silver (10%)</option>
-<option value="15">Gold (15%)</option>
-<option value="20">Platinum (20%)</option>
-<option value="30">Diamond (30%)</option>
-</select>
-
-<input id="refs" type="number" placeholder="Referrals" class="w-full mb-4 p-3 rounded bg-black/30">
-<input id="price" type="number" placeholder="Package Price" class="w-full mb-4 p-3 rounded bg-black/30">
-
-<button onclick="calcReferral()" class="w-full py-3 glow-btn rounded-lg">Calculate</button>
-
-<p id="refResult" class="mt-4"></p>
-</div>
-
-<div class="glass p-8 rounded-2xl">
-<h3 class="text-xl font-semibold mb-6">Package Return</h3>
-
-<select id="role" class="w-full mb-4 p-3 rounded bg-black/30">
-<option value="4">Master (4X)</option>
-<option value="10">Grandmaster (10X)</option>
-</select>
-
-<input id="invest" type="number" placeholder="Investment" class="w-full mb-4 p-3 rounded bg-black/30">
-
-<button onclick="calcReturn()" class="w-full py-3 glow-btn rounded-lg">Calculate</button>
-
-<p id="returnResult" class="mt-4"></p>
-</div>
-
-</section>
-
-</div>
-
-</div>
 
 <!-- ================= YOUR FULL DASHBOARD ================= -->
 <!-- DASHBOARD -->
@@ -612,20 +553,7 @@ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
 document.getElementById(id).classList.add('active');
 }
 
-function calcReferral(){
-let p = document.getElementById("package").value;
-let r = document.getElementById("refs").value;
-let price = document.getElementById("price").value;
-let total = (price * p / 100) * r;
-document.getElementById("refResult").innerText = "Earnings: " + total + " USDT";
-}
 
-function calcReturn(){
-let m = document.getElementById("role").value;
-let i = document.getElementById("invest").value;
-let total = i * m;
-document.getElementById("returnResult").innerText = "Return: " + total + " USDT";
-}
 </script>
 
 
