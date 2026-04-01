@@ -396,12 +396,6 @@ View Tools & Analytics
       </div>
     </div>
 
-    <!-- Button -->
-    <button onclick="stake()"
-      class="w-full py-3 md:py-4 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 font-semibold hover:opacity-90 transition">
-      🚀 Stake CG Tokens
-    </button>
-
   </div>
 </section>
 
@@ -1162,11 +1156,11 @@ function update() {
   let amount = parseFloat(amountInput.value) || 0;
   let days = parseInt(slider.value);
 
-  receiveText.innerText = amount.toFixed(2) + ' sEFI';
+  receiveText.innerText = amount.toFixed(2) + ' sCG';
   daysText.innerText = days + ' Days';
 
   let reward = amount * apy * (days / 365);
-  rewardsText.innerText = reward.toFixed(4) + ' EFI';
+  rewardsText.innerText = reward.toFixed(4) + ' CG';
 }
 
 amountInput.addEventListener('input', update);
@@ -1177,28 +1171,7 @@ function setMax() {
   update();
 }
 
-function stake() {
-  let amount = parseFloat(amountInput.value);
 
-  if (!amount || amount <= 0) {
-    alert('Enter valid amount');
-    return;
-  }
-
-  if (amount > balance) {
-    alert('Insufficient balance');
-    return;
-  }
-
-  balance -= amount;
-  document.getElementById('balanceText').innerText =
-    `Balance: ${balance.toFixed(8)} EFI`;
-
-  alert(`Staked ${amount} EFI successfully!`);
-
-  amountInput.value = '';
-  update();
-}
 
 update();
 </script>
