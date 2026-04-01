@@ -156,17 +156,25 @@ input:focus, select:focus {
 <!-- ================= LANDING ================= -->
 <div x-show="page==='landing'" class="w-full">
 
-<header class="flex items-center justify-between px-4 md:px-6 py-4 border-b border-white/10">
-    <div class="flex items-center gap-3">
+<header class="sticky top-0 z-50 backdrop-blur-xl bg-white/5 border-b border-white/10 shadow-lg">
 
-        <!-- LOGO IMAGE -->
-        <img src="logo.png" alt="Crypto Galian Logo" 
-             class="w-9 h-9 rounded-lg object-cover">
+    <div class="flex items-center justify-between px-4 md:px-6 py-4">
 
-        <!-- TEXT -->
-        <h1 class="text-lg md:text-xl font-semibold tracking-wide">Crypto Galian</h1>  
+        <div class="flex items-center gap-3">
+
+            <!-- LOGO IMAGE -->
+            <img src="logo.png" alt="Crypto Galian Logo" 
+                 class="w-9 h-9 rounded-lg object-cover">
+
+            <!-- TEXT -->
+            <h1 class="text-lg md:text-xl font-semibold tracking-wide text-white">
+                Crypto Galian
+            </h1>  
+
+        </div>
 
     </div>
+
 </header>
 
 <!-- ================= HOME PAGE ================= -->
