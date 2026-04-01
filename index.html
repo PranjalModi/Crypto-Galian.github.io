@@ -97,9 +97,9 @@ input:focus, select:focus {
 <body class="text-white" x-data="app()" x-init="init()">
 
 <!-- ================= LANDING ================= -->
-<div x-show="page==='landing'">
+<div x-show="page==='landing'" class="w-full">
 
-<header class="flex items-center justify-between px-6 py-4 border-b border-white/10">
+<header class="flex items-center justify-between px-4 md:px-6 py-4 border-b border-white/10">
     <div class="flex items-center gap-3">
 
         <!-- LOGO IMAGE -->
@@ -107,7 +107,7 @@ input:focus, select:focus {
              class="w-9 h-9 rounded-lg object-cover">
 
         <!-- TEXT -->
-        <h1 class="text-lg font-semibold tracking-wide">Crypto Galian</h1>  
+        <h1 class="text-lg md:text-xl font-semibold tracking-wide">Crypto Galian</h1>  
 
     </div>
 </header>
@@ -115,33 +115,33 @@ input:focus, select:focus {
 <!-- ================= HOME PAGE ================= -->
 <div id="homePage" class="page active">
 
-<section class="min-h-screen flex flex-col items-center justify-center text-center px-6">
+<section class="min-h-screen flex flex-col items-center justify-center text-center px-4 md:px-6">
 
-<div class="glass px-6 py-2 rounded-full text-sm mb-6 tracking-wide">
+<div class="glass px-4 md:px-6 py-2 rounded-full text-xs md:text-sm mb-6 tracking-wide">
 Advanced Crypto Intelligence Platform
 </div>
 
-<h1 class="text-4xl md:text-6xl font-semibold leading-tight max-w-4xl">
+<h1 class="text-3xl sm:text-4xl md:text-6xl font-semibold leading-tight max-w-4xl">
 Next-Generation Crypto
 <br>
 <span class="gradient-text">Analytics & Market Intelligence</span>
 </h1>
 
-<p class="text-white/60 mt-6 max-w-xl">
+<p class="text-white/60 mt-6 max-w-xl text-sm md:text-base">
 Track markets, analyze trends, and manage your crypto portfolio 
 with a powerful and intuitive dashboard built for modern traders.
 </p>
 
-<div class="mt-10 w-full max-w-sm space-y-4">
+<div class="mt-10 w-full max-w-sm space-y-3 md:space-y-4">
 
 <!-- CONNECTED DASHBOARD BUTTON -->
-<button @click="page='dashboard'" class="w-full py-4 rounded-xl glow-btn font-medium text-lg">
+<button @click="page='dashboard'" class="w-full py-3 md:py-4 rounded-xl glow-btn font-medium text-base md:text-lg">
 Start Stacking
 </button>
 
 <!-- ORIGINAL TOOL BUTTON -->
 <button onclick="showPage('toolsPage')" 
-class="w-full py-4 rounded-xl border border-white/20 text-white/80 hover:text-white hover:border-white transition">
+class="w-full py-3 md:py-4 rounded-xl border border-white/20 text-white/80 hover:text-white hover:border-white transition">
 View Tools & Analytics
 </button>
 
@@ -151,26 +151,26 @@ View Tools & Analytics
 
 
 <!-- TECHNOLOGY -->
-<section id="technology" class="py-20 bg-gradient-to-b from-black to-gray-950">
-  <div class="max-w-7xl mx-auto px-6">
+<section id="technology" class="py-16 md:py-20 bg-gradient-to-b from-black to-gray-950">
+  <div class="max-w-7xl mx-auto px-4 md:px-6">
 
-    <div class="text-center mb-14">
-      <h2 class="text-4xl font-bold mb-4 text-white">Technology</h2>
-      <h3 class="text-2xl font-semibold text-gray-300 mb-4">
+    <div class="text-center mb-12 md:mb-14">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">Technology</h2>
+      <h3 class="text-xl md:text-2xl font-semibold text-gray-300 mb-4">
         Engineered for Performance
       </h3>
-      <p class="text-gray-400 max-w-2xl mx-auto">
+      <p class="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
         Our protocol leverages cutting-edge blockchain technology for enterprise-grade scalability and security.
       </p>
     </div>
 
-    <div class="grid md:grid-cols-2 gap-10 items-center">
-      <div class="bg-white/5 backdrop-blur-lg p-8 rounded-2xl border border-white/10 hover:shadow-indigo-500/20 shadow-lg transition">
-        <h4 class="text-xl font-semibold mb-3 text-white">Polygon Integration</h4>
-        <p class="text-gray-400 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-center">
+      <div class="bg-white/5 backdrop-blur-lg p-6 md:p-8 rounded-2xl border border-white/10 hover:shadow-indigo-500/20 shadow-lg transition">
+        <h4 class="text-lg md:text-xl font-semibold mb-3 text-white">Polygon Integration</h4>
+        <p class="text-gray-400 mb-6 text-sm md:text-base">
           Built on Polygon's high-performance infrastructure with sub-cent transaction costs and 2-second finality.
         </p>
-        <a href="#" class="text-indigo-400 font-medium hover:text-indigo-300">
+        <a href="#" class="text-indigo-400 font-medium hover:text-indigo-300 text-sm md:text-base">
           View Implementation →
         </a>
       </div>
@@ -181,33 +181,33 @@ View Tools & Analytics
 </section>
 
 <!-- TOKENOMICS -->
-<section id="tokenomics" class="py-20 bg-gradient-to-b from-gray-950 to-black">
-  <div class="max-w-7xl mx-auto px-6">
+<section id="tokenomics" class="py-16 md:py-20 bg-gradient-to-b from-gray-950 to-black">
+  <div class="max-w-7xl mx-auto px-4 md:px-6">
 
-    <div class="text-center mb-14">
-      <h2 class="text-4xl font-bold mb-4 text-white">Tokenomics</h2>
-      <h3 class="text-2xl font-semibold text-gray-300">
+    <div class="text-center mb-12 md:mb-14">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">Tokenomics</h2>
+      <h3 class="text-xl md:text-2xl font-semibold text-gray-300">
         Transparent Economics
       </h3>
     </div>
 
     <!-- Tokens -->
-    <div class="grid md:grid-cols-2 gap-8 mb-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12">
 
-      <div class="bg-white/5 backdrop-blur-lg p-8 rounded-2xl border border-white/10 hover:shadow-indigo-500/20 shadow-lg transition">
-        <h4 class="text-xl font-semibold mb-2 text-white">EFI Token</h4>
-        <p class="text-gray-400 mb-4">Main utility token</p>
-        <ul class="space-y-2 text-gray-300">
+      <div class="bg-white/5 backdrop-blur-lg p-6 md:p-8 rounded-2xl border border-white/10 hover:shadow-indigo-500/20 shadow-lg transition">
+        <h4 class="text-lg md:text-xl font-semibold mb-2 text-white">CG Token</h4>
+        <p class="text-gray-400 mb-4 text-sm md:text-base">Main utility token</p>
+        <ul class="space-y-2 text-gray-300 text-sm md:text-base">
           <li><strong>Initial Supply:</strong> 75,000</li>
           <li><strong>Standard:</strong> ERC-20</li>
           <li><strong>Decimals:</strong> 18</li>
         </ul>
       </div>
 
-      <div class="bg-white/5 backdrop-blur-lg p-8 rounded-2xl border border-white/10 hover:shadow-indigo-500/20 shadow-lg transition">
-        <h4 class="text-xl font-semibold mb-2 text-white">sEFI Token</h4>
-        <p class="text-gray-400 mb-4">Staking receipt token</p>
-        <ul class="space-y-2 text-gray-300">
+      <div class="bg-white/5 backdrop-blur-lg p-6 md:p-8 rounded-2xl border border-white/10 hover:shadow-indigo-500/20 shadow-lg transition">
+        <h4 class="text-lg md:text-xl font-semibold mb-2 text-white">sCG Token</h4>
+        <p class="text-gray-400 mb-4 text-sm md:text-base">Staking receipt token</p>
+        <ul class="space-y-2 text-gray-300 text-sm md:text-base">
           <li><strong>Ratio:</strong> 1:1</li>
           <li><strong>Type:</strong> Rebasing</li>
           <li><strong>Yield:</strong> Auto-compound</li>
@@ -217,19 +217,19 @@ View Tools & Analytics
     </div>
 
     <!-- Rewards -->
-    <div class="bg-white/5 backdrop-blur-lg p-8 rounded-2xl border border-white/10 shadow-lg mb-12">
-      <h4 class="text-xl font-semibold mb-4 text-white">Reward Mechanics</h4>
+    <div class="bg-white/5 backdrop-blur-lg p-6 md:p-8 rounded-2xl border border-white/10 shadow-lg mb-12">
+      <h4 class="text-lg md:text-xl font-semibold mb-4 text-white">Reward Mechanics</h4>
 
-      <div class="grid md:grid-cols-2 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
         <div>
-          <p class="text-gray-400">Current Reward Rate</p>
-          <p class="text-3xl font-bold text-indigo-400">0.3333%</p>
-          <p class="text-gray-400">Per 8-hour epoch with automatic compounding</p>
+          <p class="text-gray-400 text-sm">Current Reward Rate</p>
+          <p class="text-2xl md:text-3xl font-bold text-indigo-400">0.3333%</p>
+          <p class="text-gray-400 text-sm">Per 8-hour epoch with automatic compounding</p>
         </div>
 
         <div>
-          <p class="text-gray-400 mb-2">Inflation Control</p>
-          <ul class="text-gray-300 space-y-1">
+          <p class="text-gray-400 mb-2 text-sm">Inflation Control</p>
+          <ul class="text-gray-300 space-y-1 text-sm">
             <li>0 - 199,999 wallets → 0.3333%</li>
             <li>200k - 399,999 wallets → 0.3222%</li>
             <li>400k - 599,999 wallets → 0.3111%</li>
@@ -241,18 +241,19 @@ View Tools & Analytics
     </div>
 
     <!-- Energy -->
-    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-8 rounded-2xl shadow-lg">
-      <h4 class="text-xl font-semibold mb-3">Energy System</h4>
-      <p class="mb-4">
-        Burn EFI tokens to create Energy credits for fee payments when network exceeds 500k stakers.
+    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6 md:p-8 rounded-2xl shadow-lg">
+      <h4 class="text-lg md:text-xl font-semibold mb-3">Energy System</h4>
+      <p class="mb-4 text-sm md:text-base">
+        Burn CG tokens to create Energy credits for fee payments when network exceeds 500k stakers.
       </p>
-      <p class="font-medium">
+      <p class="font-medium text-sm md:text-base">
         Network fee: 25% (paid in Energy)
       </p>
     </div>
 
   </div>
 </section>
+
 
 <!-- STAKING SECTION -->
 <section class="section">
@@ -265,12 +266,12 @@ View Tools & Analytics
     <div class="grid md:grid-cols-3 grid-cols-1 gap-6 text-center mb-10">
       <div>
         <div class="text-2xl mb-2">💼</div>
-        <h3 class="font-semibold">Stake EFI</h3>
-        <p class="text-sm text-white/60">Deposit your EFI tokens</p>
+        <h3 class="font-semibold">Stake CG</h3>
+        <p class="text-sm text-white/60">Deposit your CG tokens</p>
       </div>
       <div>
         <div class="text-2xl mb-2">🔄</div>
-        <h3 class="font-semibold">Mint sEFI</h3>
+        <h3 class="font-semibold">Mint sCG</h3>
         <p class="text-sm text-white/60">Receive staking tokens 1:1</p>
       </div>
       <div>
@@ -289,13 +290,13 @@ View Tools & Analytics
           class="bg-transparent outline-none text-lg w-full">
 
         <div class="flex items-center gap-3 text-sm">
-          <span class="text-white/60">EFI</span>
+          <span class="text-white/60">CG</span>
           <button onclick="setMax()" class="bg-white/10 px-2 py-1 rounded hover:bg-white/20">Max</button>
         </div>
       </div>
 
       <div class="flex justify-between text-xs text-white/50 mt-2">
-        <span id="balanceText">Balance: 1000.00000000 EFI</span>
+        <span id="balanceText">Balance: 1000.00000000 CG</span>
         <span id="usdValue">~$1500.00</span>
       </div>
     </div>
@@ -304,12 +305,12 @@ View Tools & Analytics
     <div class="mb-6">
       <div class="flex justify-between items-center">
         <span class="text-white/70">You will receive:</span>
-        <span class="text-xl font-semibold" id="receive">0.00 sEFI</span>
+        <span class="text-xl font-semibold" id="receive">0.00 sCG</span>
       </div>
 
       <div class="flex justify-between text-xs text-white/50 mt-1">
         <span>Exchange rate:</span>
-        <span>1 EFI = 1 sEFI</span>
+        <span>1 CG = 1 sCG</span>
       </div>
     </div>
 
@@ -333,14 +334,14 @@ View Tools & Analytics
     <div class="mb-6">
       <div class="flex justify-between text-sm">
         <span class="text-white/70">Estimated Rewards</span>
-        <span id="rewards">0.00 EFI</span>
+        <span id="rewards">0.00 CG</span>
       </div>
     </div>
 
     <!-- Button -->
     <button onclick="stake()"
       class="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 font-semibold hover:opacity-90 transition">
-      🚀 Stake EFI Tokens
+      🚀 Stake CG Tokens
     </button>
 
   </div>
@@ -417,14 +418,14 @@ View Tools & Analytics
         When the network exceeds 
         <span class="text-white font-medium">500,000 active stakers</span>, 
         a <span class="text-indigo-400 font-medium">25% fee</span> applies to rewards. 
-        This fee is paid using Energy credits created by burning EFI tokens.
+        This fee is paid using Energy credits created by burning CG tokens.
       </p>
 
       <!-- Highlight -->
       <div class="border border-white/20 rounded-xl px-6 py-4 text-sm text-gray-300 bg-white/5">
         Reward claims require a 
         <span class="text-white font-medium">24-hour DAI lock</span> 
-        at the same value before receiving EFI.
+        at the same value before receiving CG.
       </div>
 
     </div>
@@ -453,7 +454,7 @@ View Tools & Analytics
       </h3>
 
       <p class="text-gray-400 max-w-3xl mx-auto">
-        ElevateFi bridges DeFi with real-world assets, transforming lives and economies globally through decentralized innovation.
+        Crypto-Galian bridges DeFi with real-world assets, transforming lives and economies globally through decentralized innovation.
       </p>
     </div>
 
@@ -503,7 +504,7 @@ View Tools & Analytics
       </h3>
 
       <p class="text-gray-400 text-center max-w-3xl mx-auto mb-12">
-        ElevateFi is building the infrastructure to democratize access to institutional-grade investments, 
+        Crypto-Galian is building the infrastructure to democratize access to institutional-grade investments, 
         breaking down traditional barriers and creating global wealth opportunities for everyone.
       </p>
 
