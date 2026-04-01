@@ -12,6 +12,63 @@
 
     
 <style>
+
+/* ===== GLOBAL SPACING SYSTEM ===== */
+
+/* Sections */
+.section {
+  padding: 120px 16px;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 80px 16px;
+  }
+}
+
+/* Container */
+.container-fix {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Headings spacing */
+h1, h2 {
+  margin-bottom: 24px;
+}
+
+h3 {
+  margin-bottom: 16px;
+}
+
+/* Paragraph spacing */
+p {
+  margin-bottom: 12px;
+  line-height: 1.7;
+}
+
+/* Cards spacing consistency */
+.glass {
+  padding: 24px;
+}
+
+@media (min-width: 768px) {
+  .glass {
+    padding: 32px;
+  }
+}
+
+/* Grid spacing fix */
+.grid {
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    gap: 32px;
+  }
+}
+    
 body {
     font-family: 'Inter', sans-serif;
     background: radial-gradient(circle at 20% 20%, #0b0f19, #020617);
