@@ -1560,60 +1560,11 @@ class="mx-auto rounded-lg shadow">
 
 </div>
 
-<script>
-function txHandler() {
-  return {
-    txInput: '',
-    txHash: '',
-    discountCode: '',
-    discountPercent: 0,
+<input x-model="txInput" placeholder="Enter TX Hash (#CODE optional)" class="w-full p-2 rounded-lg">
 
-    validCodes: {
-      "15CGDG": 15,
-      "20VIP": 20,
-      "50SUPER": 50
-    },
-
-    parseInput() {
-      const parts = this.txInput.split('#');
-      
-      this.txHash = parts[0]?.trim() || '';
-      this.discountCode = parts[1]?.trim().toUpperCase() || '';
-    },
-
-    submitTx() {
-      // Parse before submit (important)
-      this.parseInput();
-
-      // ❌ TX Hash required
-      if (!this.txHash) {
-        alert("Enter TX Hash");
-        return;
-      }
-
-      // ❌ If code entered but invalid
-      if (this.discountCode && !this.validCodes[this.discountCode]) {
-        alert("Invalid Discount Code");
-        return;
-      }
-
-      // ✅ Apply discount if valid
-      this.discountPercent = this.validCodes[this.discountCode] || 0;
-
-      // ✅ Success
-      alert(
-        "TX Submitted Successfully!\n" +
-        "TX Hash: " + this.txHash + 
-        (this.discountPercent > 0 
-          ? "\nDiscount: " + this.discountPercent + "% OFF" 
-          : "")
-      );
-
-      // 👉 Continue your logic (API call / save etc.)
-    }
-  }
-}
-</script>
+<p class="text-green-400 text-sm" x-show="discountPercent > 0">
+🎉 <span x-text="discountPercent"></span>% OFF applied
+</p>  
 
 </div>
 
@@ -1789,6 +1740,16 @@ payCoin:'usdt',
 payAmount:0,
 txHash:'',
 
+txInput:'',
+discountCode:'',
+discountPercent:0,
+
+validCodes:{
+ "15CGDG":15,
+ "20VIP":20,
+ "50SUPER":50
+},
+
 txs:[],
 
 rates:{usdt:1, btc:65000, eth:3500, trx:0.12},
@@ -1830,6 +1791,69 @@ let income=this.package*percent;
 this.refIncome+=income;
 this.earnings+=income;
 },
+
+parseInput(){
+ let parts = this.txInput.split('#');
+
+ this.txHash = parts[0]?.trim() || '';
+ this.discountCode = parts[1]?.trim().toUpperCase() || '';
+
+ this.discountPercent = this.validCodes[this.discountCode] || 0;
+},
+
+submitTx(){
+
+ // ✅ STEP 1: Parse input
+ this.parseInput();
+
+ // ❌ No TX Hash
+ if(!this.txHash){
+  alert("Enter TX Hash");
+  return;
+ }
+
+ // ❌ Invalid discount code
+ if(this.discountCode && !this.validCodes[this.discountCode]){
+  alert("Invalid Discount Code");
+  return;
+ }
+
+ // ✅ Apply discount
+ let finalAmount = this.payAmount;
+
+ if(this.discountPercent > 0){
+  finalAmount = this.payAmount - (this.payAmount * this.discountPercent / 100);
+ }
+
+ // ✅ Save transaction
+ this.txs.push({
+  amount: finalAmount,
+  original: this.payAmount,
+  discount: this.discountPercent,
+  hash: this.txHash
+ });
+
+ // ✅ Optional: activate plan
+ this.planName = this.package;
+
+ // ✅ Success message
+ alert(
+  "Payment Submitted Successfully!\n\n" +
+  "TX Hash: " + this.txHash +
+  (this.discountPercent > 0 
+    ? "\nDiscount Applied: " + this.discountPercent + "% OFF" 
+    : "")
+ );
+
+ // 🔁 Reset input
+ this.txInput = '';
+ this.txHash = '';
+ this.discountCode = '';
+ this.discountPercent = 0;
+
+ // 🔄 Go to transactions
+ this.section = 'transactions';
+}
 
 withdraw(){
 if(this.withdrawAmt>this.earnings) return alert('Insufficient');
@@ -1959,60 +1983,6 @@ document.getElementById(id).classList.add('active');
 }
 </script>
 
-    <script>
-function txHandler() {
-  return {
-    txInput: '',
-    txHash: '',
-    discountCode: '',
-    discountPercent: 0,
-
-    validCodes: {
-      "15CGDG": 15,
-      "20VIP": 20,
-      "50SUPER": 50
-    },
-
-    parseInput() {
-      const parts = this.txInput.split('#');
-      
-      this.txHash = parts[0]?.trim() || '';
-      this.discountCode = parts[1]?.trim().toUpperCase() || '';
-    },
-
-    submitTx() {
-      // Parse before submit (important)
-      this.parseInput();
-
-      // ❌ TX Hash required
-      if (!this.txHash) {
-        alert("Enter TX Hash");
-        return;
-      }
-
-      // ❌ If code entered but invalid
-      if (this.discountCode && !this.validCodes[this.discountCode]) {
-        alert("Invalid Discount Code");
-        return;
-      }
-
-      // ✅ Apply discount if valid
-      this.discountPercent = this.validCodes[this.discountCode] || 0;
-
-      // ✅ Success
-      alert(
-        "TX Submitted Successfully!\n" +
-        "TX Hash: " + this.txHash + 
-        (this.discountPercent > 0 
-          ? "\nDiscount: " + this.discountPercent + "% OFF" 
-          : "")
-      );
-
-      // 👉 Continue your logic (API call / save etc.)
-    }
-  }
-}
-</script>
 
 
 </body>
